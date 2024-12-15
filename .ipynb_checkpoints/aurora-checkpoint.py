@@ -36,10 +36,10 @@ price_cache = {}
 historical_data_cache = {}
 coingecko_extra_cache = {}
 
-aurora = dash.Dash(__name__)
-aurora.title = "Aurora"
+app = dash.Dash(__name__)
+app.title = "Aurora"
 
-AURORA_LOGO_URL = aurora.get_asset_url('aurora_logo.png')
+AURORA_LOGO_URL = app.get_asset_url('aurora_logo.png')
 
 def fetch_current_price_and_data(coin):
     now = time.time()
@@ -240,13 +240,13 @@ def main_layout():
         })
     ], className="main-layout")
 
-aurora.layout = html.Div([
+app.layout = html.Div([
     dcc.Store(id="page-state", data="loading"),
     html.Div(id="page-content"),
     dcc.Interval(id="loading-interval", interval=2000, n_intervals=0, max_intervals=1)
 ])
 
-@aurora.callback(
+@app.callback(
     Output("page-content", "children"),
     Input("page-state", "data")
 )
@@ -256,7 +256,7 @@ def render_page(page):
     else:
         return main_layout()
 
-@aurora.callback(
+@app.callback(
     Output("page-state", "data"),
     Input("loading-interval", "n_intervals"),
     State("page-state", "data")
@@ -266,7 +266,7 @@ def load_data(n, current_state):
         return "main"
     return current_state
 
-@aurora.callback(
+@app.callback(
     Output('toggles-store', 'data'),
     [
         Input('xrp-logo', 'n_clicks'),
@@ -333,7 +333,7 @@ def update_toggles(xrp_click, btc_click, eth_click,
 
     return toggles
 
-@aurora.callback(
+@app.callback(
     [
      Output("selected-coin-price-logo", "src"),
      Output("current-price", "children"),
@@ -516,4 +516,4 @@ def update_chart(toggles, n_intervals, last_price):
 
 
 if __name__ == "__main__":
-    aurora.run_server(debug=False)
+    app.run_server(debug=False)

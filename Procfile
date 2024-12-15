@@ -1,1 +1,1 @@
-web: gunicorn aurora:aurora
+web: gunicorn aurora:app
