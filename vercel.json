@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "aurora.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "aurora.py"
+    }
+  ]
+}

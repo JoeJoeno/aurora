@@ -104,45 +104,41 @@ html, body {
     gap: 10px;
 }
 
+/* Default button style */
 .timeframe-button {
-    background-color: #444;
+    background-color: #62009c;
     border: none;
     color: white;
+    transition: all 0.3s ease-in-out;
 }
 
-.timeframe-button:hover {
+.charttype-button {
+    background-color: #7a009c;
+    border: none;
+    color: white;
+    transition: all 0.3s ease-in-out;
+}
+
+.indicator-button {
+    background-color: #97009c;
+    border: none;
+    color: white;
+    transition: all 0.3s ease-in-out;
+}
+
+.timeframe-button:hover, .charttype-button:hover, .indicator-button:hover {
     background-color: #666;
     box-shadow: 0 0 5px #666;
 }
 
-.charttype-button {
-    background-color: #333;
-    border: none;
-    color: #ff8aff;
-}
-.charttype-button:hover {
-    background-color: #555;
-    box-shadow: 0 0 5px #ff8aff;
-}
-
-.indicator-button {
-    background-color: #222;
-    border: none;
-    color: #00ffa2;
-}
-.indicator-button:hover {
-    background-color: #444;
-    box-shadow: 0 0 5px #00ffa2;
-}
-
-.feature-button {
-    background-color: #222;
-    border: none;
-    color: #ffa500;
-}
-.feature-button:hover {
-    background-color: #444;
-    box-shadow: 0 0 5px #ffa500;
+/* Glow effect when selected */
+.timeframe-button.selected,
+.charttype-button.selected,
+.indicator-button.selected {
+    background-color: #ffffff; /* Bright color for selection */
+    color: black;
+    box-shadow: 0 0 10px #ffffff;
+    transform: scale(1.05); /* Slightly enlarge the button */
 }
 
 button {

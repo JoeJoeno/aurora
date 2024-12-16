@@ -28,9 +28,9 @@ COIN_CONFIG = {
     }
 }
 
-PRICE_CACHE_TTL = 15
-HISTORICAL_DATA_CACHE_TTL = 60
-COINGECKO_CACHE_TTL = 15
+PRICE_CACHE_TTL = 1
+HISTORICAL_DATA_CACHE_TTL = 300
+COINGECKO_CACHE_TTL = 60
 
 price_cache = {}
 historical_data_cache = {}
@@ -41,46 +41,62 @@ app.title = "Aurora"
 
 AURORA_LOGO_URL = app.get_asset_url('aurora_logo.png')
 
+from concurrent.futures import ThreadPoolExecutor
+
 def fetch_current_price_and_data(coin):
     now = time.time()
+    
+    # Check cache first
     if coin in price_cache and coin in coingecko_extra_cache:
         cached_time_price, cached_price = price_cache[coin]
         cached_time_data, cached_data = coingecko_extra_cache[coin]
         if now - cached_time_price < PRICE_CACHE_TTL and now - cached_time_data < COINGECKO_CACHE_TTL:
             return cached_price, cached_data
 
+    # Get coin-specific configuration
     conf = COIN_CONFIG[coin]
     coingecko_url = (f"https://api.coingecko.com/api/v3/simple/price"
                      f"?ids={conf['coingecko_id']}&vs_currencies=usd"
                      f"&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true")
+    cryptocompare_url = f"https://min-api.cryptocompare.com/data/price?fsym={conf['cc_symbol']}&tsyms=USD"
+    kraken_url = f"https://api.kraken.com/0/public/Ticker?pair={conf['kraken_pair']}" if conf['kraken_pair'] else None
 
-    apis = [
-        coingecko_url,
-        f"https://min-api.cryptocompare.com/data/price?fsym={conf['cc_symbol']}&tsyms=USD",
-    ]
-    if conf['kraken_pair']:
-        apis.append(f"https://api.kraken.com/0/public/Ticker?pair={conf['kraken_pair']}")
+    # List of URLs to fetch
+    urls = [coingecko_url, cryptocompare_url]
+    if kraken_url:
+        urls.append(kraken_url)
 
+    # Fetch data concurrently
+    def fetch_url(url):
+        try:
+            response = requests.get(url, timeout=5)
+            response.raise_for_status()
+            return url, response.json()
+        except Exception as e:
+            print(f"Failed to fetch {url}: {e}")
+            return url, None
+
+    with ThreadPoolExecutor() as executor:
+        results = list(executor.map(fetch_url, urls))
+
+    # Parse results
     prices = []
     coingecko_data = None
-    for url in apis:
-        try:
-            response = requests.get(url)
-            response.raise_for_status()
-            data = response.json()
 
-            if "coingecko" in url:
-                coingecko_data = data.get(conf['coingecko_id'], {})
-                if 'usd' in coingecko_data:
-                    prices.append(coingecko_data['usd'])
-            elif "cryptocompare" in url:
-                prices.append(data['USD'])
-            elif "kraken" in url and data.get('result'):
-                pair = list(data['result'].keys())[0]
-                prices.append(float(data['result'][pair]['c'][0]))
-        except:
-            pass
+    for url, data in results:
+        if not data:
+            continue
+        if "coingecko" in url:
+            coingecko_data = data.get(conf['coingecko_id'], {})
+            if 'usd' in coingecko_data:
+                prices.append(coingecko_data['usd'])
+        elif "cryptocompare" in url:
+            prices.append(data.get('USD'))
+        elif "kraken" in url and data.get('result'):
+            pair = list(data['result'].keys())[0]
+            prices.append(float(data['result'][pair]['c'][0]))
 
+    # Calculate average price
     if prices:
         avg_price = sum(prices) / len(prices)
         price_cache[coin] = (time.time(), avg_price)
@@ -111,7 +127,7 @@ def fetch_historical_data(coin, interval):
     else:
         url = f"https://min-api.cryptocompare.com/data/v2/histohour?fsym={cc_symbol}&tsym=USD&limit=50"
 
-    response = requests.get(url)
+    response = requests.get(url, timeout=5)
     response.raise_for_status()
     data = response.json()["Data"]["Data"]
 
@@ -201,8 +217,6 @@ def main_layout():
                 html.Button("SMA", id="btn-sma", className="indicator-button"),
                 html.Button("RSI", id="btn-rsi", className="indicator-button"),
                 html.Button("Volume", id="btn-volume", className="indicator-button"),
-                html.Button("Compare ETH", id="btn-compare", className="feature-button"),
-                html.Button("Refresh", id="btn-refresh", className="feature-button"),
             ]),
             
             # We'll show selected coin logo next to the price
@@ -234,9 +248,7 @@ def main_layout():
             "chart_type": "candle",
             "sma_on": False,
             "rsi_on": False,
-            "volume_on": False,
-            "compare_on": False,
-            "refresh_needed": False
+            "volume_on": False
         })
     ], className="main-layout")
 
@@ -281,15 +293,13 @@ def load_data(n, current_state):
         Input('btn-sma', 'n_clicks'),
         Input('btn-rsi', 'n_clicks'),
         Input('btn-volume', 'n_clicks'),
-        Input('btn-compare', 'n_clicks'),
-        Input('btn-refresh', 'n_clicks'),
     ],
     State('toggles-store', 'data')
 )
 def update_toggles(xrp_click, btc_click, eth_click,
                    b5, b15, bhourly, bdaily,
                    bcandle, bline,
-                   bsma, brsi, bvolume, bcompare, brefresh,
+                   bsma, brsi, bvolume,
                    toggles):
     ctx = dash.callback_context
     if not ctx.triggered:
@@ -326,10 +336,6 @@ def update_toggles(xrp_click, btc_click, eth_click,
         toggle_bool("rsi_on")
     elif changed_id == 'btn-volume':
         toggle_bool("volume_on")
-    elif changed_id == 'btn-compare':
-        toggle_bool("compare_on")
-    elif changed_id == 'btn-refresh':
-        toggles["refresh_needed"] = True
 
     return toggles
 
@@ -359,21 +365,16 @@ def update_chart(toggles, n_intervals, last_price):
     sma_on = toggles["sma_on"]
     rsi_on = toggles["rsi_on"]
     volume_on = toggles["volume_on"]
-    compare_on = toggles["compare_on"]
-    refresh_needed = toggles["refresh_needed"]
 
     price, coingecko_data = fetch_current_price_and_data(coin)
     times, opens, highs, lows, closes, volumes = fetch_historical_data(coin, timeframe)
 
-    # If compare_on, compare ETH line:
-    if compare_on:
-        cprice, cdata = fetch_current_price_and_data("ETH")
-        ctimes, copens, chighs, clows, ccloses, cvols = fetch_historical_data("ETH", timeframe)
 
     market_cap_text = "MC: ..."
     mc_class = "percentage-white"
     volume_text = "Vol: ..."
     vol_class = "percentage-white"
+    
     if coingecko_data:
         mc = coingecko_data.get('usd_market_cap')
         vol = coingecko_data.get('usd_24h_vol')
@@ -425,13 +426,6 @@ def update_chart(toggles, n_intervals, last_price):
             name=coin
         ))
 
-    # Compare ETH if on
-    if compare_on:
-        fig.add_trace(go.Scatter(
-            x=ctimes, y=ccloses, mode='lines', line=dict(color='cyan', width=2, dash='dot'),
-            name="ETH Compare"
-        ))
-
     closes_array = np.array(closes,dtype=float)
 
     # SMA if on
@@ -473,7 +467,6 @@ def update_chart(toggles, n_intervals, last_price):
             yaxis3=dict(
                 overlaying='y',
                 side='right',
-                position=1.07,
                 showgrid=False,
                 tickfont=dict(color='rgba(200,200,200,0.7)'),
                 title='Volume'
@@ -514,6 +507,42 @@ def update_chart(toggles, n_intervals, last_price):
             volume_text, "percentage-white",
             fig, current_price_store)
 
+@app.callback(
+    [
+        Output("btn-5min", "className"),
+        Output("btn-15min", "className"),
+        Output("btn-hourly", "className"),
+        Output("btn-daily", "className"),
+    ],
+    Input("toggles-store", "data")
+)
+def update_timeframe_styles(toggles):
+    timeframe = toggles["timeframe"]
+    return [
+        "timeframe-button selected" if timeframe == "5min" else "timeframe-button",
+        "timeframe-button selected" if timeframe == "15min" else "timeframe-button",
+        "timeframe-button selected" if timeframe == "hourly" else "timeframe-button",
+        "timeframe-button selected" if timeframe == "daily" else "timeframe-button",
+    ]
+
+@app.callback(
+    [
+        Output("btn-candle", "className"),
+        Output("btn-line", "className"),
+        Output("btn-sma", "className"),
+        Output("btn-rsi", "className"),
+        Output("btn-volume", "className"),
+    ],
+    Input("toggles-store", "data")
+)
+def update_tool_styles(toggles):
+    return [
+        "charttype-button selected" if toggles["chart_type"] == "candle" else "charttype-button",
+        "charttype-button selected" if toggles["chart_type"] == "line" else "charttype-button",
+        "indicator-button selected" if toggles["sma_on"] else "indicator-button",
+        "indicator-button selected" if toggles["rsi_on"] else "indicator-button",
+        "indicator-button selected" if toggles["volume_on"] else "indicator-button",
+    ]
 
 if __name__ == "__main__":
     app.run_server(debug=False)
