@@ -37,6 +37,7 @@ historical_data_cache = {}
 coingecko_extra_cache = {}
 
 app = dash.Dash(__name__)
+server = app.server
 app.title = "Aurora"
 
 AURORA_LOGO_URL = app.get_asset_url('aurora_logo.png')
