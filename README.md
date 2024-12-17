@@ -1,4 +1,4 @@
-<img src="assets/aurora_logo.png" alt="Logo" width="150" />
+![Logo](assets/aurora_logo.png)
 
 ![Home Page](assets/home.png)
 
