@@ -28,6 +28,11 @@ html, body {
     margin-right: 20px;
 }
 
+.aurora-logo-topbar:hover {
+    transform: scale(1.05); /* Slight zoom and rotation */
+    box-shadow: 0 8px 5px rgba(0, 0, 0, 0.3); 
+}
+
 .coins-container {
     display: flex;
     gap: 15px;
@@ -57,10 +62,6 @@ html, body {
 .coin-logo:hover {
     filter: brightness(1.2);
     transform: scale(1.05)
-}
-
-.coin-selected {
-    box-shadow: 0 0 10px var(--accent-pink);
 }
 
 .dropdown-container {
@@ -128,7 +129,7 @@ button {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    box-shadow: 0 0 5px var(--accent-pink);
+    filter: brightness(1.2)
 }
 
 .percentage-green {

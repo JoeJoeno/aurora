@@ -337,7 +337,7 @@ def home_layout():
             ])
 
         ]
-    )
+     )
 
 def main_layout(selected_coin="BTC"):
     return html.Div([
@@ -718,4 +718,4 @@ def update_tool_styles(toggles):
     ]
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=False)
