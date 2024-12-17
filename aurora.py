@@ -25,6 +25,120 @@ COIN_CONFIG = {
         "cc_symbol": "ETH",
         "kraken_pair": "XETHZUSD",
         "logo": "https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=023"
+    },
+    "SOL": {
+        "coingecko_id": "solana",
+        "cc_symbol": "SOL",
+        "kraken_pair": "SOLUSD",
+        "logo": "https://cryptologos.cc/logos/solana-sol-logo.svg?v=023"
+    },
+    "BNB": {
+        "coingecko_id": "binancecoin",
+        "cc_symbol": "BNB",
+        "kraken_pair": None,
+        "logo": "https://cryptologos.cc/logos/binance-coin-bnb-logo.svg?v=023"
+    },
+    "DOGE": {
+        "coingecko_id": "dogecoin",
+        "cc_symbol": "DOGE",
+        "kraken_pair": "XXDGUSD",
+        "logo": "https://cryptologos.cc/logos/dogecoin-doge-logo.svg?v=023"
+    },
+    "ADA": {
+        "coingecko_id": "cardano",
+        "cc_symbol": "ADA",
+        "kraken_pair": "ADAUSD",
+        "logo": "https://cryptologos.cc/logos/cardano-ada-logo.svg?v=023"
+    },
+    "TRX": {
+        "coingecko_id": "tron",
+        "cc_symbol": "TRX",
+        "kraken_pair": None,
+        "logo": "https://cryptologos.cc/logos/tron-trx-logo.svg?v=023"
+    },
+    "AVAX": {
+        "coingecko_id": "avalanche-2",
+        "cc_symbol": "AVAX",
+        "kraken_pair": "AVAXUSD",
+        "logo": "https://cryptologos.cc/logos/avalanche-avax-logo.svg?v=023"
+    },
+    "LINK": {
+        "coingecko_id": "chainlink",
+        "cc_symbol": "LINK",
+        "kraken_pair": "LINKUSD",
+        "logo": "https://cryptologos.cc/logos/chainlink-link-logo.svg?v=023"
+    },
+    "SHIB": {
+        "coingecko_id": "shiba-inu",
+        "cc_symbol": "SHIB",
+        "kraken_pair": None,
+        "logo": "https://cryptologos.cc/logos/shiba-inu-shib-logo.svg?v=023"
+    },
+    "SUI": {
+        "coingecko_id": "sui",
+        "cc_symbol": "SUI",
+        "kraken_pair": None,
+        "logo": "https://cryptologos.cc/logos/sui-sui-logo.svg?v=023"
+    },
+    "MATIC": {
+        "coingecko_id": "polygon",
+        "cc_symbol": "MATIC",
+        "kraken_pair": "MATICUSD",
+        "logo": "https://cryptologos.cc/logos/polygon-matic-logo.svg?v=023"
+    },
+    "LTC": {
+        "coingecko_id": "litecoin",
+        "cc_symbol": "LTC",
+        "kraken_pair": "XLTCZUSD",
+        "logo": "https://cryptologos.cc/logos/litecoin-ltc-logo.svg?v=023"
+    },
+    "DOT": {
+        "coingecko_id": "polkadot",
+        "cc_symbol": "DOT",
+        "kraken_pair": "DOTUSD",
+        "logo": "https://cryptologos.cc/logos/polkadot-new-dot-logo.svg?v=023"
+    },
+    "UNI": {
+        "coingecko_id": "uniswap",
+        "cc_symbol": "UNI",
+        "kraken_pair": "UNIUSD",
+        "logo": "https://cryptologos.cc/logos/uniswap-uni-logo.svg?v=023"
+    },
+    "ATOM": {
+        "coingecko_id": "cosmos",
+        "cc_symbol": "ATOM",
+        "kraken_pair": "ATOMUSD",
+        "logo": "https://cryptologos.cc/logos/cosmos-atom-logo.svg?v=023"
+    },
+    "APT": {
+        "coingecko_id": "aptos",
+        "cc_symbol": "APT",
+        "kraken_pair": None,
+        "logo": "https://cryptologos.cc/logos/aptos-apt-logo.svg?v=023"
+    },
+    "OP": {
+        "coingecko_id": "optimism",
+        "cc_symbol": "OP",
+        "kraken_pair": None,
+        "logo": "https://cryptologos.cc/logos/optimism-eth-logo.svg?v=023"
+    },
+    "ARB": {
+        "coingecko_id": "arbitrum",
+        "cc_symbol": "ARB",
+        "kraken_pair": None,
+        "logo": "https://cryptologos.cc/logos/arbitrum-arb-logo.svg?v=023"
+    },
+    "NEAR": {
+        "coingecko_id": "near",
+        "cc_symbol": "NEAR",
+        "kraken_pair": "NEARUSD",
+        "logo": "https://cryptologos.cc/logos/near-protocol-near-logo.svg?v=023"
+    },
+    "ALGO": {
+        "coingecko_id": "algorand",
+        "cc_symbol": "ALGO",
+        "kraken_pair": "ALGOUSD",
+        "logo": "https://cryptologos.cc/logos/algorand-algo-logo.svg?v=023"
     }
 }
 
@@ -179,35 +293,74 @@ def calc_rsi(values, period=14):
             rsi.append(100 - (100/(1+rs)))
     return [None]*period + rsi
 
-def loading_screen_layout():
+def home_layout():
     return html.Div(
-        className="loading-screen",
+        className="home-container",
         children=[
-            html.Div(
-                className="loading-container",
-                children=[
-                    html.Img(src=AURORA_LOGO_URL, className="aurora-logo-loading"),
-                    html.Div(className="spinner"),
-                    html.P("Loading assets", style={
-                        "color":"white",
-                        "marginTop":"10px",
-                        "fontSize":"18px"
-                    })
-                ]
-            )
+            
+            # Top Bar with Logo
+            html.Div(className="home-logo-container", children=[
+                html.Img(
+                    src=app.get_asset_url("aurora_logo.png"),  # Use correct file path
+                    className="home-logo",
+                    alt="Aurora Logo"
+                )
+            ]),
+            
+            
+            
+            
+            # Background Overlay & Hero Section
+            html.Div(className="hero-section", children=[
+                html.Div(className="hero-content", children=[
+                    html.H1("Trade Boldly / Plan Wisely.", className="hero-title"),
+                    html.P(
+                        "Success starts with strategy, thrives on precision.",
+                        className="hero-subtitle"
+                    ),
+                ]),
+            ]),
+            
+            # Search Markets Section
+            html.Div(className="search-container", children=[
+                html.Div(className="search-box-wrapper", children=[
+                    dcc.Dropdown(
+                        id="search-crypto-dropdown",
+                        options=[
+                            {"label": f"{coin} ({COIN_CONFIG[coin]['coingecko_id'].title()})", "value": coin}
+                            for coin in COIN_CONFIG.keys()
+                        ],
+                        placeholder="Search markets here",
+                        className="search-box"
+                    )
+                ])
+            ])
+
         ]
     )
 
-def main_layout():
+def main_layout(selected_coin="BTC"):
     return html.Div([
         html.Div(className="top-bar", children=[
-            html.Img(src=AURORA_LOGO_URL, className="aurora-logo-topbar"),
-            html.Div(className="coins-container", children=[
-                html.Img(src=COIN_CONFIG["XRP"]["logo"], id="xrp-logo", className="coin-logo"),
-                html.Img(src=COIN_CONFIG["BTC"]["logo"], id="btc-logo", className="coin-logo"),
-                html.Img(src=COIN_CONFIG["ETH"]["logo"], id="eth-logo", className="coin-logo"),
-            ]),
+            dcc.Link(
+                href="/",
+                children=html.Img(src=AURORA_LOGO_URL, className="aurora-logo-topbar"),
+            ),
             
+            # Dropdown Selector for Cryptos
+            html.Div(className="crypto-selector-container", children=[
+                dcc.Dropdown(
+                    id="crypto-selector",
+                    options=[
+                        {"label": f"{coin} ({COIN_CONFIG[coin]['coingecko_id'].title()})", "value": coin}
+                        for coin in COIN_CONFIG.keys()
+                    ],
+                    value=selected_coin,  # Default selected
+                    placeholder="Select a cryptocurrency",
+                    style={"width": "200px", "color": "black"}  # Adjust dropdown width and style
+                )
+            ]),
+
             html.Div(className="dropdown-container", children=[
                 html.Button("5-min", id="btn-5min", className="timeframe-button"),
                 html.Button("15-min", id="btn-15min", className="timeframe-button"),
@@ -219,8 +372,7 @@ def main_layout():
                 html.Button("RSI", id="btn-rsi", className="indicator-button"),
                 html.Button("Volume", id="btn-volume", className="indicator-button"),
             ]),
-            
-            # We'll show selected coin logo next to the price
+
             html.Div(className="price-info", children=[
                 html.Img(id="selected-coin-price-logo", className="selected-coin-price-logo"),
                 html.Span(id="current-price"),
@@ -229,11 +381,12 @@ def main_layout():
         ]),
 
         dcc.Graph(id="candlestick-chart", style={"height": "600px"}),
-
-        html.Div(className="info-panel", children=[
-            html.Span(id="market-cap"),
-            html.Span(id="volume")
-        ]),
+        
+        dcc.Graph(
+            id="market-sentiment-heatmap",
+            config={"staticPlot": False},
+            style={"height": "223px", "marginTop": "-10px", "marginBottom": "5px"}
+        ),
 
         dcc.Interval(
             id="update-interval",
@@ -242,9 +395,8 @@ def main_layout():
         ),
 
         dcc.Store(id='last-price-store', data=None),
-        dcc.Store(id='selected-coin', data='XRP'),
         dcc.Store(id='toggles-store', data={
-            "coin": "XRP",
+            "coin": selected_coin,
             "timeframe": "hourly",
             "chart_type": "candle",
             "sma_on": False,
@@ -254,37 +406,40 @@ def main_layout():
     ], className="main-layout")
 
 app.layout = html.Div([
-    dcc.Store(id="page-state", data="loading"),
-    html.Div(id="page-content"),
-    dcc.Interval(id="loading-interval", interval=2000, n_intervals=0, max_intervals=1)
+    dcc.Location(id="url", refresh=False),  # URL routing
+    dcc.Store(id="selected-coin-store", data=None),  # Store for selected coin
+    html.Div(id="page-content")  # Dynamic content area
 ])
 
+# Render correct page based on URL
 @app.callback(
     Output("page-content", "children"),
-    Input("page-state", "data")
+    Input("url", "pathname"),
+    State("selected-coin-store", "data")
 )
-def render_page(page):
-    if page == "loading":
-        return loading_screen_layout()
+def display_page(pathname, selected_coin):
+    if pathname == "/":
+        return home_layout()
+    elif pathname == "/main":
+        return main_layout(selected_coin or "BTC")
     else:
-        return main_layout()
+        return html.H1("404: Page not found", style={"textAlign": "center", "color": "red"})
 
+# Navigate to Main Layout and store selected crypto
 @app.callback(
-    Output("page-state", "data"),
-    Input("loading-interval", "n_intervals"),
-    State("page-state", "data")
+    [Output("url", "pathname"), Output("selected-coin-store", "data")],
+    Input("search-crypto-dropdown", "value"),
+    prevent_initial_call=True
 )
-def load_data(n, current_state):
-    if current_state == "loading" and n == 1:
-        return "main"
-    return current_state
+def navigate_to_main_page(crypto_selected):
+    if crypto_selected:
+        return "/main", crypto_selected
+    return "/", None
 
 @app.callback(
     Output('toggles-store', 'data'),
     [
-        Input('xrp-logo', 'n_clicks'),
-        Input('btc-logo', 'n_clicks'),
-        Input('eth-logo', 'n_clicks'),
+        Input('crypto-selector', 'value'),
         Input('btn-5min', 'n_clicks'),
         Input('btn-15min', 'n_clicks'),
         Input('btn-hourly', 'n_clicks'),
@@ -295,9 +450,10 @@ def load_data(n, current_state):
         Input('btn-rsi', 'n_clicks'),
         Input('btn-volume', 'n_clicks'),
     ],
-    State('toggles-store', 'data')
+    [State('toggles-store', 'data')],
+    prevent_initial_call=True
 )
-def update_toggles(xrp_click, btc_click, eth_click,
+def update_toggles(selected_coin,
                    b5, b15, bhourly, bdaily,
                    bcandle, bline,
                    bsma, brsi, bvolume,
@@ -310,12 +466,9 @@ def update_toggles(xrp_click, btc_click, eth_click,
     def toggle_bool(key):
         toggles[key] = not toggles[key]
 
-    if changed_id == 'xrp-logo':
-        toggles["coin"] = "XRP"
-    elif changed_id == 'btc-logo':
-        toggles["coin"] = "BTC"
-    elif changed_id == 'eth-logo':
-        toggles["coin"] = "ETH"
+    # Update coin selection
+    if changed_id == 'crypto-selector' and selected_coin:
+        toggles["coin"] = selected_coin
 
     elif changed_id == 'btn-5min':
         toggles["timeframe"] = "5min"
@@ -346,11 +499,8 @@ def update_toggles(xrp_click, btc_click, eth_click,
      Output("current-price", "children"),
      Output("price-change", "children"),
      Output("price-change", "className"),
-     Output("market-cap", "children"),
-     Output("market-cap", "className"),
-     Output("volume", "children"),
-     Output("volume", "className"),
      Output("candlestick-chart", "figure"),
+     Output("market-sentiment-heatmap", "figure"),
      Output('last-price-store', 'data')
     ],
     [
@@ -369,21 +519,7 @@ def update_chart(toggles, n_intervals, last_price):
 
     price, coingecko_data = fetch_current_price_and_data(coin)
     times, opens, highs, lows, closes, volumes = fetch_historical_data(coin, timeframe)
-
-
-    market_cap_text = "MC: ..."
-    mc_class = "percentage-white"
-    volume_text = "Vol: ..."
-    vol_class = "percentage-white"
     
-    if coingecko_data:
-        mc = coingecko_data.get('usd_market_cap')
-        vol = coingecko_data.get('usd_24h_vol')
-        if mc is not None:
-            market_cap_text = f"MC: ${mc:,.0f}"
-        if vol is not None:
-            volume_text = f"Vol: ${vol:,.0f}"
-
     if price is None:
         price_text = "..."
         current_price_store = last_price
@@ -439,7 +575,7 @@ def update_chart(toggles, n_intervals, last_price):
 
     # RSI if on
     if rsi_on:
-        rsi_values = calc_rsi(closes_array)
+        rsi_values = calc_rsi(closes_array, period=7)
         fig.add_trace(go.Scatter(
             x=times, y=rsi_values, mode='lines', line=dict(color='magenta', width=2),
             name="RSI(14)",
@@ -473,7 +609,7 @@ def update_chart(toggles, n_intervals, last_price):
                 title='Volume'
             )
         )
-
+    
     fig.update_layout(
         paper_bgcolor="#121212",
         plot_bgcolor="#1e1e2f",
@@ -501,12 +637,48 @@ def update_chart(toggles, n_intervals, last_price):
 
     # selected coin logo next to the price:
     selected_coin_logo_src = COIN_CONFIG[coin]["logo"]
+    
+    price_changes = [((c - o) / o) * 100 if o > 0 else 0 for o, c in zip(opens, closes)]
+
+    heatmap_fig = go.Figure(data=go.Heatmap(
+        x=times,
+        y=["Sentiment"],
+        z=[price_changes],  # Make sure z is a 2D list to match Heatmap requirements
+        colorscale="RdYlGn",  # Red to Yellow to Green
+        zmin=-3, # Minimum price percentage change
+        zmax=3,   # Maximum price percentage change
+        colorbar=None,
+        showscale=False,# Adjust size of the colorbar
+        )
+    )
+
+    # Update layout for proper alignment
+    heatmap_fig.update_layout(
+        paper_bgcolor="#121212",
+        plot_bgcolor="#1e1e2f",
+        margin=dict(l=65, r=65, t=5, b=10),  # Adjust margins for no excess space
+        xaxis=dict(
+            showline=False,
+            showgrid=False,
+            tickfont=dict(color='white'),
+            title=None,
+            autorange=True,
+            mirror=True,
+        ),
+        yaxis=dict(
+            showline=False,
+            showticklabels=False,
+            title=None,
+            autorange=True,
+            mirror=True,
+        ),
+        autosize=False,
+        height = 100# Ensure it auto-resizes perfectly
+    )
 
     return (selected_coin_logo_src,
             price_text, change_text, change_class,
-            market_cap_text, "percentage-white",
-            volume_text, "percentage-white",
-            fig, current_price_store)
+            fig, heatmap_fig, current_price_store)
 
 @app.callback(
     [
@@ -546,4 +718,4 @@ def update_tool_styles(toggles):
     ]
 
 if __name__ == "__main__":
-    app.run_server(debug=False)
+    app.run_server(debug=True)

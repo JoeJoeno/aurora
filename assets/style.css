@@ -1,6 +1,8 @@
 html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
+    overflow-x: hidden;
     background-color: #121212;
     font-family: Arial, sans-serif;
     color: white;
@@ -10,42 +12,6 @@ html, body {
     --accent-pink: #ff8aff;
     --dark-bg: #121212;
     --panel-bg: #1e1e2f;
-}
-
-/* Loading screen */
-.loading-screen {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: var(--dark-bg);
-    flex-direction: column;
-}
-
-.loading-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.aurora-logo-loading {
-    width: 200px;
-    margin-bottom: 20px;
-}
-
-.spinner {
-    width: 50px;
-    height: 50px;
-    border: 6px solid rgba(255,255,255,0.3);
-    border-top: 6px solid #ffffff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 20px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 
 /* Top bar */
@@ -90,8 +56,7 @@ html, body {
 
 .coin-logo:hover {
     filter: brightness(1.2);
-    transform: scale(1.05);
-    box-shadow: 0 0 5px var(--accent-pink);
+    transform: scale(1.05)
 }
 
 .coin-selected {
@@ -182,18 +147,99 @@ button {
     background-color: var(--dark-bg);
 }
 
-/* Info panel below the chart */
-.info-panel {
+/* Background Image */
+.home-container {
+    position: relative;
+    height: 100vh;
+    background: url('/assets/bg.jpeg') no-repeat center center fixed;
+    background-size: cover; /* Ensures the image covers the screen */
+    overflow: hidden;
     display: flex;
-    gap: 20px;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
-    font-size: 20px;
+    align-items: center;
+    color: white;
+    z-index: 1; /* Ensures content appears on top */
+}
+
+/* Optional: Overlay to improve text readability */
+.home-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Adds a subtle dark overlay */
+    z-index: -1; /* Ensures the overlay stays behind content */
+}
+
+/* Hero Section */
+.hero-section {
+    text-align: center;
+    z-index: 2;
+    margin-bottom: 20px;
+}
+
+.hero-title {
+    font-size: 60px;
     font-weight: bold;
-    margin: 20px;
-    padding: 10px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 10px;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.hero-subtitle {
+    font-size: 20px;
+    color: #b3b3b3;
+    max-width: 400px;
+    margin: 0 auto;
+}
+/* Search Box */
+.search-container {
+    margin: 0px;
+}
+
+.search-box {
+    width: 350px;
+    padding: 8px 12px; /* Added padding for better spacing */
+    font-size: 18px;
+    border: none;
+    background-color: #ffffff; /* White background for the box */
+    color: #555555; /* Dark gray text color */
+    outline: none; /* Removes default browser outline */
+    border-radius: 10px; /* Rounded edges */
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2); /* Subtle box shadow */
+}
+
+.search-box::placeholder {
+    color: #555555; /* Darker placeholder text */
+    opacity: 0.7; /* Slightly transparent for distinction */
+}
+
+.search-box:hover {
+    transform: scale(1.05); /* Slight zoom and rotation */
+    box-shadow: 0 8px 5px rgba(0, 0, 0, 0.6)
+}
+
+/* Home Logo Container */
+.home-logo-container {
+    position: absolute; /* Top-left fixed position */
+    top: 20px;
+    left: 20px;
+    z-index: 10; /* Keeps it above other elements */
+}
+
+/* Logo Styling */
+.home-logo {
+    width: 200px; /* Adjust the size as needed */
+    height: auto;
+    background: none; /* Ensures no background */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth animation for transform and shadow */
+}
+
+.home-logo:hover {
+    transform: scale(1.05); /* Slight zoom and rotation */
+    box-shadow: 0 8px 5px rgba(0, 0, 0, 0.6); 
 }
 
 #candlestick-chart {
