@@ -1,7 +1,5 @@
 ![Logo](assets/aurora_logo.png)
 
-Aurora is a cryptocurrency trading dashboard built with Dash and Plotly. It enables users to analyze real-time and historical cryptocurrency market data and plan trades.
-
 ![Home Page](assets/home.png)
 
 ![Dashboard](assets/main.png)
