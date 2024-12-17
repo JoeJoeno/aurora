@@ -66,7 +66,7 @@ python app.py
 
 Or you can visit the Render Development Build here:
 
-[Aurora](httpshttps://aurora-vens.onrender.com/)
+https://aurora-vens.onrender.com/
 
 ## **Customizations**
 
