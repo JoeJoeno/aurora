@@ -1,8 +1,6 @@
-# **Aurora - Cryptocurrency Trading Dashboard**
-
 ![Logo](assets/aurora_logo.png)
 
-Aurora is an interactive cryptocurrency trading dashboard built with Dash and Plotly. It enables users to analyze real-time and historical cryptocurrency market data, plan trades, and customize their viewing experience.
+Aurora is a cryptocurrency trading dashboard built with Dash and Plotly. It enables users to analyze real-time and historical cryptocurrency market data and plan trades.
 
 ![Home Page](assets/home.png)
 
@@ -15,11 +13,9 @@ Aurora is an interactive cryptocurrency trading dashboard built with Dash and Pl
 1. [Overview](#overview)
 2. [Features](#features)
 3. [Tech Stack](#tech-stack)
-4. [Installation](#installation)
-5. [Running the Application](#running-the-application)
-6. [Application Layout](#application-layout)
-7. [Customizations](#customizations)
-9. [Credits](#credits)
+4. [Running the Application](#running-the-application)
+5. [Customizations](#customizations)
+6. [Credits](#credits)
 
 ---
 
@@ -62,31 +58,6 @@ The dashboard uses API data from **CoinGecko**, **CryptoCompare**, and **Kraken*
 
 ---
 
-## **Installation**
-
-1. **Clone the repository**:
-
-   ```bash
-   git clone <repository-url>
-   cd <repository-folder>
-   ```
-
-2. **Create and activate a virtual environment**:
-
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # For macOS/Linux
-   venv\Scripts\activate     # For Windows
-   ```
-
-3. **Install dependencies**:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
----
-
 ## **Running the Application**
 
 Run the Python script to launch the dashboard:
@@ -95,25 +66,9 @@ Run the Python script to launch the dashboard:
 python app.py
 ```
 
-## **Application Layout**
+Or you can visit the Render Development Build here:
 
-The dashboard has two main views:
-
-### **1. Home Page**
-- **Welcome Banner**: "Trade Boldly / Plan Wisely" with a search bar.
-- **Search Markets**: Select a cryptocurrency to analyze.
-
-### **2. Main Dashboard**
-- **Top Bar**:
-  - Coin Selector Dropdown
-  - Timeframe and Chart Type Buttons
-  - Real-time Price and Percentage Change
-- **Main Chart**:
-  - Candlestick or Line Chart with optional indicators (SMA/RSI/Volume).
-- **Heatmap**:
-  - Visualizes market sentiment based on price changes.
-
----
+[Aurora](httpshttps://aurora-vens.onrender.com/)
 
 ## **Customizations**
 
@@ -140,7 +95,9 @@ To add a new cryptocurrency:
 
 ## **License**
 
-This project is licensed under the **MIT License**.
+This project is licensed under the **MIT License**. See the LICENSE file for details.
+
+Copyright (c) 2024 Rhett R. Adam
 
 ---
 
