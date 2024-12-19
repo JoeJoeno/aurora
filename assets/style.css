@@ -21,8 +21,11 @@ html, body {
     padding: 10px 20px;
     background-color: var(--dark-bg);
     border-bottom: 1px solid #333333;
+    /* Optional: Add gap for consistent spacing between top-bar children */
+    gap: 20px; /* Adjust as needed */
 }
 
+/* Logo Styling */
 .aurora-logo-topbar {
     width: 200px;
     margin-right: 20px;
@@ -33,6 +36,7 @@ html, body {
     box-shadow: 0 8px 5px rgba(0, 0, 0, 0.3); 
 }
 
+/* Coins Container */
 .coins-container {
     display: flex;
     gap: 15px;
@@ -64,37 +68,45 @@ html, body {
     transform: scale(1.05)
 }
 
+/* Dropdown Container */
 .dropdown-container {
-    margin-left: 20px;
+    /* Removed margin-left to ensure consistent spacing */
+    /* margin-left: 30px; */
     display: flex;
     gap: 10px;
 }
 
-/* Default button style */
+/* Add margin-right to Crypto Selector for consistent spacing */
+.crypto-selector-container {
+    margin-right: -10px; /* Creates a 10px gap between Crypto Dropdown and Indicators Dropdown */
+}
+
+/* Timeframe Buttons Styling */
+.timeframe-buttons {
+    display: flex;              /* Enables horizontal layout */
+    gap: 5px;                  /* Space between buttons */
+    /* Removed margin-left: 30px; to align properly after dropdown-container */
+    /* margin-left: 30px; */
+    margin-right: 20px;         /* Keeps space from the right end */
+    align-items: center;        /* Vertically centers the buttons */
+}
+
+/* Default button styles */
 .timeframe-button {
-    background-color: #62009c;
+    background-color: var(--dark-bg);
     border: none;
     color: white;
+    padding: 8px 16px;          /* Adjusted padding for better spacing */
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;         /* Rounded corners for better aesthetics */
     transition: all 0.3s ease-in-out;
 }
 
-.charttype-button {
-    background-color: #7a009c;
-    border: none;
-    color: white;
-    transition: all 0.3s ease-in-out;
-}
-
-.indicator-button {
-    background-color: #97009c;
-    border: none;
-    color: white;
-    transition: all 0.3s ease-in-out;
-}
-
+/* Hover Effects */
 .timeframe-button:hover, .charttype-button:hover, .indicator-button:hover {
-    background-color: #666;
-    box-shadow: 0 0 5px #666;
+    background-color: #ffffff;
+    color: black;
 }
 
 /* Glow effect when selected */
@@ -103,10 +115,11 @@ html, body {
 .indicator-button.selected {
     background-color: #ffffff; /* Bright color for selection */
     color: black;
-    box-shadow: 0 0 10px #ffffff;
+    box-shadow: 0 0 25px #d138ff;
     transform: scale(1.05); /* Slightly enlarge the button */
 }
 
+/* General Button Styling */
 button {
     padding: 10px 20px;
     font-size: 16px;
@@ -116,6 +129,7 @@ button {
     font-weight: bold;
 }
 
+/* Price Information Styling */
 .price-info {
     margin-left: auto; 
     display: flex;
@@ -195,6 +209,7 @@ button {
     max-width: 400px;
     margin: 0 auto;
 }
+
 /* Search Box */
 .search-container {
     margin: 0px;
@@ -243,6 +258,7 @@ button {
     box-shadow: 0 8px 5px rgba(0, 0, 0, 0.6); 
 }
 
+/* Candlestick Chart */
 #candlestick-chart {
     margin: 20px;
 }

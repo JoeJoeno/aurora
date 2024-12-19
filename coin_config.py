@@ -1,10 +1,4 @@
 COIN_CONFIG = {
-    "XRP": {
-        "coingecko_id": "ripple",
-        "cc_symbol": "XRP",
-        "kraken_pair": "XRPUSD",
-        "logo": "https://cryptologos.cc/logos/xrp-xrp-logo.svg?v=023"
-    },
     "BTC": {
         "coingecko_id": "bitcoin",
         "cc_symbol": "BTC",
@@ -16,6 +10,12 @@ COIN_CONFIG = {
         "cc_symbol": "ETH",
         "kraken_pair": "XETHZUSD",
         "logo": "https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=023"
+    },
+    "XRP": {
+        "coingecko_id": "ripple",
+        "cc_symbol": "XRP",
+        "kraken_pair": "XRPUSD",
+        "logo": "https://cryptologos.cc/logos/xrp-xrp-logo.svg?v=023"
     },
     "SOL": {
         "coingecko_id": "solana",
@@ -130,5 +130,65 @@ COIN_CONFIG = {
         "cc_symbol": "ALGO",
         "kraken_pair": "ALGOUSD",
         "logo": "https://cryptologos.cc/logos/algorand-algo-logo.svg?v=023"
+    },
+    "AAVE": {
+        "coingecko_id": "aave",
+        "cc_symbol": "AAVE",
+        "kraken_pair": "AAVEUSD",
+        "logo": "https://cryptologos.cc/logos/aave-aave-logo.svg?v=023"
+    },
+    "FTM": {
+        "coingecko_id": "fantom",
+        "cc_symbol": "FTM",
+        "kraken_pair": None,
+        "logo": "https://cryptologos.cc/logos/fantom-ftm-logo.svg?v=023"
+    },
+    "SAND": {
+        "coingecko_id": "the-sandbox",
+        "cc_symbol": "SAND",
+        "kraken_pair": "SANDUSD",
+        "logo": "https://cryptologos.cc/logos/sandbox-sand-logo.svg?v=023"
+    },
+    "GALA": {
+        "coingecko_id": "gala",
+        "cc_symbol": "GALA",
+        "kraken_pair": None,
+        "logo": "https://cryptologos.cc/logos/gala-gala-logo.svg?v=023"
+    },
+    "FIL": {
+        "coingecko_id": "filecoin",
+        "cc_symbol": "FIL",
+        "kraken_pair": "FILUSD",
+        "logo": "https://cryptologos.cc/logos/filecoin-fil-logo.svg?v=023"
+    },
+    "QNT": {
+        "coingecko_id": "quant-network",
+        "cc_symbol": "QNT",
+        "kraken_pair": "QNTUSD",
+        "logo": "https://cryptologos.cc/logos/quant-qnt-logo.svg?v=023"
+    },
+    "EOS": {
+        "coingecko_id": "eos",
+        "cc_symbol": "EOS",
+        "kraken_pair": "EOSUSD",
+        "logo": "https://cryptologos.cc/logos/eos-eos-logo.svg?v=023"
+    },
+    "FLOW": {
+        "coingecko_id": "flow",
+        "cc_symbol": "FLOW",
+        "kraken_pair": "FLOWUSD",
+        "logo": "https://cryptologos.cc/logos/flow-flow-logo.svg?v=023"
+    },
+    "CHZ": {
+        "coingecko_id": "chiliz",
+        "cc_symbol": "CHZ",
+        "kraken_pair": "CHZUSD",
+        "logo": "https://cryptologos.cc/logos/chiliz-chz-logo.svg?v=023"
+    },
+    "HNT": {
+        "coingecko_id": "helium",
+        "cc_symbol": "HNT",
+        "kraken_pair": None,
+        "logo": "https://cryptologos.cc/logos/helium-hnt-logo.svg?v=023"
     }
 }
