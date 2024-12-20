@@ -188,20 +188,29 @@ def home_layout():
         children=[
             
             # Top Bar with Logo
-            html.Div(className="home-logo-container", children=[
-                html.Img(
-                    src=app.get_asset_url("aurora_logo.png"),  # Use correct file path
-                    className="home-logo",
-                    alt="Aurora Logo"
-                )
-            ]),
-            
+            html.Div(
+                className="home-logo-container",
+                children=[
+                    html.A(
+                        href="https://github.com/rhettadam/aurora",  # Link to GitHub repository
+                        target="_blank",  # Opens the link in a new tab
+                        children=[
+                            html.Img(
+                                src=app.get_asset_url("aurora_logo.png"),  # Use correct file path
+                                className="home-logo",
+                                alt="Aurora Logo",
+                            )
+                        ],
+                    )
+                ],
+            ),
+
             # Background Overlay & Hero Section
             html.Div(className="hero-section", children=[
                 html.Div(className="hero-content", children=[
                     html.H1("Trade Boldly / Plan Wisely.", className="hero-title"),
                     html.P(
-                        "Success starts with strategy, thrives on precision.",
+                        "Success starts with strategy, \n but it thrives on precision.",
                         className="hero-subtitle"
                     ),
                 ]),
