@@ -212,10 +212,7 @@ def home_layout():
                 html.Div(className="search-box-wrapper", children=[
                     dcc.Dropdown(
                         id="search-crypto-dropdown",
-                        options=[
-                            {"label": f"{coin} ({COIN_CONFIG[coin]['coingecko_id'].title()})", "value": coin}
-                            for coin in COIN_CONFIG.keys()
-                        ],
+                        options=get_sorted_dropdown_options(),
                         placeholder="Search market here",
                         className="search-box"
                     )
@@ -239,10 +236,8 @@ def main_layout(selected_coin="BTC"):
             html.Div(className="crypto-selector-container", children=[
                 dcc.Dropdown(
                     id="crypto-selector",
-                    options=[
-                        {"label": f"{coin} ({COIN_CONFIG[coin]['coingecko_id'].title()})", "value": coin}
-                        for coin in COIN_CONFIG.keys()
-                    ],
+                    options=get_sorted_dropdown_options(),
+                    clearable=False,
                     value=selected_coin,  # Default selected
                     placeholder="Select a cryptocurrency",
                     style={"width": "180px", "color": "black"}  # Adjust dropdown width and style
@@ -265,6 +260,7 @@ def main_layout(selected_coin="BTC"):
                             {"label": "Stochastic Oscillator", "value": "stochastic"},
                             {"label": "EMA", "value": "ema"},
                         ],
+                        clearable=False,
                         value=["candle"],  # Default selection
                         multi=True,
                         placeholder="Select indicators",
@@ -727,6 +723,32 @@ def update_timeframe_button_styles(toggles):
         "timeframe-button selected" if timeframe == "5yr" else "timeframe-button",
         "timeframe-button selected" if timeframe == "ALL" else "timeframe-button",
     ]
+
+def get_sorted_dropdown_options():
+    # Group coins by category
+    categories = {}
+    for coin, details in COIN_CONFIG.items():
+        category = details.get("category", "Uncategorized")
+        if category not in categories:
+            categories[category] = []
+        categories[category].append({
+            "label": f"{coin} ({details['coingecko_id'].title()})",
+            "value": coin
+        })
+    
+    # Sort categories alphabetically
+    sorted_categories = sorted(categories.items())
+
+    # Format dropdown options with headers
+    dropdown_options = []
+    for category, coins in sorted_categories:
+        # Add a category header (disabled option)
+        dropdown_options.append({"label": f"--- {category} ---", "value": None, "disabled": True})
+        # Add coins under this category
+        dropdown_options.extend(sorted(coins, key=lambda x: x["label"]))
+    
+    return dropdown_options
+
 
 if __name__ == "__main__":
     app.run_server(debug=False)
