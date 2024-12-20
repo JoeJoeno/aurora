@@ -254,6 +254,7 @@ button {
     outline: none; /* Removes default browser outline */
     border-radius: 15px; /* Rounded edges */
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2); /* Subtle box shadow */
+    transition: all 0.3s ease-in-out;
 }
 
 .search-box::placeholder {

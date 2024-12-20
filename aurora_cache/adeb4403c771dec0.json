@@ -1,0 +1,86 @@
+{
+  "cookies": {
+    "__cf_bm": "lp3dV62Nd_W.GBXf6UFNV0lP_kOkBN5azW2ifN8PNPM-1734726537-1.0.1.1-b6_24gYlyZ0w8NkDgXZhGzdDugXemmLBLGz5GqFXTpsW_uVd6BP2vGvKOWTRc_zGQaRw2aJ0ejtRMUPzTB70MQ",
+    "_cfuvid": "Ijj_upyATt8r.sZk3OThTK6134PCE8p4hL4avQiM77s-1734726537534-0.0.1.1-604800000"
+  },
+  "created_at": "2024-12-20T20:28:57.552452+00:00",
+  "elapsed": 0.234793,
+  "encoding": "utf-8",
+  "expires": "2024-12-20T20:33:57.552423+00:00",
+  "headers": {
+    "CF-Cache-Status": "HIT",
+    "CF-RAY": "8f5261bacbcfbf7f-ATL",
+    "Cache-Control": "public, max-age=1",
+    "Connection": "keep-alive",
+    "Content-Encoding": "br",
+    "Content-Type": "application\/json",
+    "Date": "Fri, 20 Dec 2024 20:28:57 GMT",
+    "Last-Modified": "Fri, 20 Dec 2024 20:28:56 GMT",
+    "Server": "cloudflare",
+    "Set-Cookie": "__cf_bm=lp3dV62Nd_W.GBXf6UFNV0lP_kOkBN5azW2ifN8PNPM-1734726537-1.0.1.1-b6_24gYlyZ0w8NkDgXZhGzdDugXemmLBLGz5GqFXTpsW_uVd6BP2vGvKOWTRc_zGQaRw2aJ0ejtRMUPzTB70MQ; path=\/; expires=Fri, 20-Dec-24 20:58:57 GMT; domain=.kraken.com; HttpOnly; Secure; SameSite=None, _cfuvid=Ijj_upyATt8r.sZk3OThTK6134PCE8p4hL4avQiM77s-1734726537534-0.0.1.1-604800000; path=\/; domain=.kraken.com; HttpOnly; Secure; SameSite=None",
+    "Transfer-Encoding": "chunked",
+    "Vary": "Accept-Encoding",
+    "X-Content-Type-Options": "nosniff",
+    "cnybke9l-pad": "GHnsi8fqUwo1kpEi0evKgfcMmM$E_#6.M",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+    "x-proxy": "gateway",
+    "x-trace-id": "0ab0b9df0193e5c24edc00070d4d8d18"
+  },
+  "reason": "OK",
+  "request": {
+    "body": "",
+    "headers": {
+      "Accept": "*\/*",
+      "Accept-Encoding": "gzip, deflate, br, zstd",
+      "Connection": "keep-alive",
+      "User-Agent": "python-requests\/2.31.0"
+    },
+    "method": "GET",
+    "url": "https:\/\/api.kraken.com\/0\/public\/Ticker?pair=YFIUSD"
+  },
+  "status_code": 200,
+  "url": "https:\/\/api.kraken.com\/0\/public\/Ticker?pair=YFIUSD",
+  "_decoded_content": {
+    "error": [],
+    "result": {
+      "YFIUSD": {
+        "a": [
+          "8923.00000",
+          "1",
+          "1.000"
+        ],
+        "b": [
+          "8913.00000",
+          "1",
+          "1.000"
+        ],
+        "c": [
+          "8884.00000",
+          "0.02249190"
+        ],
+        "v": [
+          "74.23431877",
+          "80.49038096"
+        ],
+        "p": [
+          "8318.79328",
+          "8330.12910"
+        ],
+        "t": [
+          783,
+          865
+        ],
+        "l": [
+          "7306.00000",
+          "7306.00000"
+        ],
+        "h": [
+          "8957.00000",
+          "8957.00000"
+        ],
+        "o": "8450.00000"
+      }
+    }
+  }
+}

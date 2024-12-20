@@ -1,0 +1,86 @@
+{
+  "cookies": {
+    "__cf_bm": "KVdnqb5G_W.dbZphhPYezeWLT.8Ymj71zsLDjUN3TWM-1734726512-1.0.1.1-26LgnBP7AdKPQRJXg7p1A7NB7T8466WqByUf0lY6ab2qWnHWbm5vbn5CNPAhn.GWHvkLn1beRmJK3jdLfY7rRw",
+    "_cfuvid": ".Xlv_MEpZINcqC3TT.eOalqhihHSYqYpIOMeoXp2mN8-1734726512050-0.0.1.1-604800000"
+  },
+  "created_at": "2024-12-20T20:28:32.067955+00:00",
+  "elapsed": 0.236773,
+  "encoding": "utf-8",
+  "expires": "2024-12-20T20:33:32.067929+00:00",
+  "headers": {
+    "CF-Cache-Status": "HIT",
+    "CF-RAY": "8f52611b8b2953d3-ATL",
+    "Cache-Control": "public, max-age=1",
+    "Connection": "keep-alive",
+    "Content-Encoding": "br",
+    "Content-Type": "application\/json",
+    "Date": "Fri, 20 Dec 2024 20:28:32 GMT",
+    "Last-Modified": "Fri, 20 Dec 2024 20:28:30 GMT",
+    "Server": "cloudflare",
+    "Set-Cookie": "__cf_bm=KVdnqb5G_W.dbZphhPYezeWLT.8Ymj71zsLDjUN3TWM-1734726512-1.0.1.1-26LgnBP7AdKPQRJXg7p1A7NB7T8466WqByUf0lY6ab2qWnHWbm5vbn5CNPAhn.GWHvkLn1beRmJK3jdLfY7rRw; path=\/; expires=Fri, 20-Dec-24 20:58:32 GMT; domain=.kraken.com; HttpOnly; Secure; SameSite=None, _cfuvid=.Xlv_MEpZINcqC3TT.eOalqhihHSYqYpIOMeoXp2mN8-1734726512050-0.0.1.1-604800000; path=\/; domain=.kraken.com; HttpOnly; Secure; SameSite=None",
+    "Transfer-Encoding": "chunked",
+    "Vary": "Accept-Encoding",
+    "X-Content-Type-Options": "nosniff",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+    "x-proxy": "gateway",
+    "x-trace-id": "0ab0b9ac0193e5c1e788000721959118",
+    "yyyyplp1y--pad": "1BkL_8ca&j.kAS1&wdt*_3.0GsW8pqo$M3"
+  },
+  "reason": "OK",
+  "request": {
+    "body": "",
+    "headers": {
+      "Accept": "*\/*",
+      "Accept-Encoding": "gzip, deflate, br, zstd",
+      "Connection": "keep-alive",
+      "User-Agent": "python-requests\/2.31.0"
+    },
+    "method": "GET",
+    "url": "https:\/\/api.kraken.com\/0\/public\/Ticker?pair=COMPUSD"
+  },
+  "status_code": 200,
+  "url": "https:\/\/api.kraken.com\/0\/public\/Ticker?pair=COMPUSD",
+  "_decoded_content": {
+    "error": [],
+    "result": {
+      "COMPUSD": {
+        "a": [
+          "83.4800",
+          "29",
+          "29.000"
+        ],
+        "b": [
+          "83.4200",
+          "3",
+          "3.000"
+        ],
+        "c": [
+          "83.6900",
+          "10.00000000"
+        ],
+        "v": [
+          "3969.66358741",
+          "4401.15516879"
+        ],
+        "p": [
+          "75.8072",
+          "76.3344"
+        ],
+        "t": [
+          550,
+          616
+        ],
+        "l": [
+          "68.8100",
+          "68.8100"
+        ],
+        "h": [
+          "84.2300",
+          "84.2300"
+        ],
+        "o": "80.0200"
+      }
+    }
+  }
+}

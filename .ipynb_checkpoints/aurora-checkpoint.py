@@ -8,11 +8,16 @@ import plotly.graph_objs as go
 import numpy as np
 
 from coin_config import COIN_CONFIG
-
 from indicators import calc_sma, calc_ema, calc_stochastic, calc_macd, calc_rsi
 
-PRICE_CACHE_TTL = 1
-HISTORICAL_DATA_CACHE_TTL = 300
+from concurrent.futures import ThreadPoolExecutor
+import requests_cache
+from functools import lru_cache
+
+requests_cache.install_cache(cache_name='aurora_cache', backend='filesystem', expire_after=300)
+
+PRICE_CACHE_TTL = 10
+HISTORICAL_DATA_CACHE_TTL = 600
 COINGECKO_CACHE_TTL = 60
 
 price_cache = {}
@@ -25,19 +30,9 @@ app.title = "Aurora"
 
 AURORA_LOGO_URL = app.get_asset_url('aurora_logo.png')
 
-from concurrent.futures import ThreadPoolExecutor
-
-def fetch_current_price_and_data(coin):
-    now = time.time()
-    
-    # Check cache first
-    if coin in price_cache and coin in coingecko_extra_cache:
-        cached_time_price, cached_price = price_cache[coin]
-        cached_time_data, cached_data = coingecko_extra_cache[coin]
-        if now - cached_time_price < PRICE_CACHE_TTL and now - cached_time_data < COINGECKO_CACHE_TTL:
-            return cached_price, cached_data
-
-    # Get coin-specific configuration
+@lru_cache(maxsize=128)
+def fetch_current_price_and_data_cached(coin):
+    """Fetch current price and coingecko data with built-in caching due to requests_cache and lru_cache."""
     conf = COIN_CONFIG[coin]
     coingecko_url = (f"https://api.coingecko.com/api/v3/simple/price"
                      f"?ids={conf['coingecko_id']}&vs_currencies=usd"
@@ -45,12 +40,10 @@ def fetch_current_price_and_data(coin):
     cryptocompare_url = f"https://min-api.cryptocompare.com/data/price?fsym={conf['cc_symbol']}&tsyms=USD"
     kraken_url = f"https://api.kraken.com/0/public/Ticker?pair={conf['kraken_pair']}" if conf['kraken_pair'] else None
 
-    # List of URLs to fetch
     urls = [coingecko_url, cryptocompare_url]
     if kraken_url:
         urls.append(kraken_url)
 
-    # Fetch data concurrently
     def fetch_url(url):
         try:
             response = requests.get(url, timeout=5)
@@ -63,13 +56,13 @@ def fetch_current_price_and_data(coin):
     with ThreadPoolExecutor() as executor:
         results = list(executor.map(fetch_url, urls))
 
-    # Parse results
     prices = []
     coingecko_data = None
 
     for url, data in results:
         if not data:
             continue
+        conf = COIN_CONFIG[coin]
         if "coingecko" in url:
             coingecko_data = data.get(conf['coingecko_id'], {})
             if 'usd' in coingecko_data:
@@ -80,107 +73,76 @@ def fetch_current_price_and_data(coin):
             pair = list(data['result'].keys())[0]
             prices.append(float(data['result'][pair]['c'][0]))
 
-    # Calculate average price
     if prices:
         avg_price = sum(prices) / len(prices)
-        price_cache[coin] = (time.time(), avg_price)
-        if coingecko_data:
-            coingecko_extra_cache[coin] = (time.time(), coingecko_data)
         return avg_price, coingecko_data
     else:
         return None, None
 
-def fetch_historical_data(coin, interval, timeframe):
-    now = time.time()
-    cache_key = (coin, interval, timeframe)
-    if cache_key in historical_data_cache:
-        cached_time, cached_data = historical_data_cache[cache_key]
-        if now - cached_time < HISTORICAL_DATA_CACHE_TTL:
-            return cached_data
-
+@lru_cache(maxsize=128)
+def fetch_historical_data_cached(coin, interval, timeframe):
+    """Fetch and cache historical data using lru_cache and requests_cache."""
     cc_symbol = COIN_CONFIG[coin]["cc_symbol"]
-    limit = 2000  # Increased limit to ensure sufficient data
+    limit = 2000
     aggregate = 1
     url = ""
 
-    # Determine the endpoint and parameters based on interval
-    try:
-        if interval.endswith("min"):
-            aggregate = int(interval.rstrip("min"))
-            url = f"https://min-api.cryptocompare.com/data/v2/histominute?fsym={cc_symbol}&tsym=USD&limit={limit}&aggregate={aggregate}"
-        elif interval.endswith("hour"):
-            aggregate_str = interval.rstrip("hour")
-            aggregate = int(aggregate_str) if aggregate_str.isdigit() else 1
-            url = f"https://min-api.cryptocompare.com/data/v2/histohour?fsym={cc_symbol}&tsym=USD&limit={limit}&aggregate={aggregate}"
-        elif interval in ["1day", "1week", "1month", "3month", "6month", "1year", "ALL"]:
-            aggregate = 1
-            url = f"https://min-api.cryptocompare.com/data/v2/histoday?fsym={cc_symbol}&tsym=USD&limit={limit}&aggregate={aggregate}"
-        else:
-            # Default to hourly if unknown interval
-            url = f"https://min-api.cryptocompare.com/data/v2/histohour?fsym={cc_symbol}&tsym=USD&limit={limit}&aggregate=1"
+    if interval.endswith("min"):
+        aggregate = int(interval.rstrip("min"))
+        url = f"https://min-api.cryptocompare.com/data/v2/histominute?fsym={cc_symbol}&tsym=USD&limit={limit}&aggregate={aggregate}"
+    elif interval.endswith("hour"):
+        aggregate_str = interval.rstrip("hour")
+        aggregate = int(aggregate_str) if aggregate_str.isdigit() else 1
+        url = f"https://min-api.cryptocompare.com/data/v2/histohour?fsym={cc_symbol}&tsym=USD&limit={limit}&aggregate={aggregate}"
+    else:
+        # Daily data
+        url = f"https://min-api.cryptocompare.com/data/v2/histoday?fsym={cc_symbol}&tsym=USD&limit={limit}&aggregate=1"
 
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-        data = response.json()["Data"]["Data"]
+    response = requests.get(url, timeout=10)
+    response.raise_for_status()
+    data = response.json()["Data"]["Data"]
 
-        if not data:
-            print(f"No data received for coin: {coin}, interval: {interval}, timeframe: {timeframe}")
-            return [], [], [], [], [], []
+    if not data:
+        return [], [], [], [], [], []
 
-        # Convert timestamps to datetime objects
-        times = [datetime.utcfromtimestamp(d["time"]) for d in data]
-        opens = [d["open"] for d in data]
-        highs = [d["high"] for d in data]
-        lows = [d["low"] for d in data]
-        closes = [d["close"] for d in data]
-        volumes = [d["volumefrom"] for d in data]
+    times = [datetime.utcfromtimestamp(d["time"]) for d in data]
+    opens = [d["open"] for d in data]
+    highs = [d["high"] for d in data]
+    lows = [d["low"] for d in data]
+    closes = [d["close"] for d in data]
+    volumes = [d["volumefrom"] for d in data]
 
-        # Calculate the start time based on timeframe
-        end_time = times[-1]
-        if timeframe == "1day":
-            start_time = end_time - timedelta(days=1)
-        elif timeframe == "1week":
-            start_time = end_time - timedelta(weeks=1)
-        elif timeframe == "1month":
-            start_time = end_time - timedelta(days=30)
-        elif timeframe == "3month":
-            start_time = end_time - timedelta(days=90)
-        elif timeframe == "6month":
-            start_time = end_time - timedelta(days=180)
-        elif timeframe == "1year":
-            start_time = end_time - timedelta(days=365)
-        elif timeframe == "YTD":
+    # Determine start time based on timeframe
+    end_time = times[-1]
+    timeframe_map = {
+        "1day": timedelta(days=1),
+        "1week": timedelta(weeks=1),
+        "1month": timedelta(days=30),
+        "3month": timedelta(days=90),
+        "6month": timedelta(days=180),
+        "1year": timedelta(days=365),
+        "5yr": timedelta(days=5*365),
+        "ALL": None,
+        "YTD": "YTD"
+    }
+
+    if timeframe in timeframe_map:
+        if timeframe == "YTD":
             start_time = datetime(end_time.year, 1, 1)
-        elif timeframe == "5yr":
-            start_time = end_time - timedelta(days=5*365)
         elif timeframe == "ALL":
             start_time = datetime(1970, 1, 1)
         else:
-            start_time = end_time - timedelta(days=30)  # Default to 1 month
+            start_time = end_time - timeframe_map[timeframe]
+    else:
+        # Default to 1month if not recognized
+        start_time = end_time - timedelta(days=30)
 
-        # Filter the data based on start_time
-        filtered_times = []
-        filtered_opens = []
-        filtered_highs = []
-        filtered_lows = []
-        filtered_closes = []
-        filtered_volumes = []
-        for t, o, h, l, c, v in zip(times, opens, highs, lows, closes, volumes):
-            if t >= start_time:
-                filtered_times.append(t)
-                filtered_opens.append(o)
-                filtered_highs.append(h)
-                filtered_lows.append(l)
-                filtered_closes.append(c)
-                filtered_volumes.append(v)
-
-        # Cache the filtered data
-        historical_data_cache[cache_key] = (now, (filtered_times, filtered_opens, filtered_highs, filtered_lows, filtered_closes, filtered_volumes))
-        return filtered_times, filtered_opens, filtered_highs, filtered_lows, filtered_closes, filtered_volumes
-    except Exception as e:
-        print(f"Error fetching historical data for {coin} with interval {interval} and timeframe {timeframe}: {e}")
+    filtered_data = [(t, o, h, l, c, v) for t, o, h, l, c, v in zip(times, opens, highs, lows, closes, volumes) if t >= start_time]
+    if not filtered_data:
         return [], [], [], [], [], []
 
+    ftimes, fopens, fhighs, flows, fcloses, fvolumes = zip(*filtered_data)
+    return list(ftimes), list(fopens), list(fhighs), list(flows), list(fcloses), list(fvolumes)
 
 def home_layout():
     return html.Div(
@@ -356,6 +318,10 @@ def main_layout(selected_coin="BTC"):
         ),
 
         dcc.Store(id='last-price-store', data=None),
+        dcc.Store(id='data-params-store', data={"coin": "BTC", "interval": "1hour", "timeframe": "1month"}),
+        # Store precomputed indicators
+        dcc.Store(id='indicators-store', data=None),
+        dcc.Store(id='historical-data-store', data=None),
         dcc.Store(id='toggles-store', data={
             "coin": selected_coin,
             "interval": "1hour",
@@ -508,8 +474,8 @@ def update_chart(toggles, n_intervals, last_price):
     stochastic_on = toggles.get("stochastic_on", False)
     ema_on = toggles.get("ema_on", False)
 
-    price, coingecko_data = fetch_current_price_and_data(coin)
-    times, opens, highs, lows, closes, volumes = fetch_historical_data(coin, interval, timeframe)
+    price, coingecko_data = fetch_current_price_and_data_cached(coin)
+    times, opens, highs, lows, closes, volumes = fetch_historical_data_cached(coin, interval, timeframe)
 
     if not times:
         # If no data is returned, avoid plotting
@@ -757,7 +723,6 @@ def get_sorted_dropdown_options():
         dropdown_options.extend(sorted(coins, key=lambda x: x["label"]))
     
     return dropdown_options
-
 
 if __name__ == "__main__":
     app.run_server(debug=False)

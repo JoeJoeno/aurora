@@ -1,0 +1,87 @@
+{
+  "cookies": {
+    "__cf_bm": "uDgVu6MiANXXpg9wRtphTOnxF9qwvFebySsBUDdIegY-1734726585-1.0.1.1-jf_fuimZsUwZ3uVd8QGN2HJTuG9mCpZhiCkrR1z5cUHnv.gWw4v7j2m1Kv5FV1U207YsvftYdbjAiyK.LaroPg",
+    "_cfuvid": "vg_XoJ6As3pAtcvo5QkneJpnFiqXPDYYqVMZpO5EO8k-1734726585579-0.0.1.1-604800000"
+  },
+  "created_at": "2024-12-20T20:29:45.595647+00:00",
+  "elapsed": 0.217551,
+  "encoding": "utf-8",
+  "expires": "2024-12-20T20:34:45.595625+00:00",
+  "headers": {
+    "Age": "0",
+    "CF-Cache-Status": "HIT",
+    "CF-RAY": "8f5262e7289ec024-ATL",
+    "Cache-Control": "public, max-age=1",
+    "Connection": "keep-alive",
+    "Content-Encoding": "br",
+    "Content-Type": "application\/json",
+    "Date": "Fri, 20 Dec 2024 20:29:45 GMT",
+    "Last-Modified": "Fri, 20 Dec 2024 20:29:45 GMT",
+    "Server": "cloudflare",
+    "Set-Cookie": "__cf_bm=uDgVu6MiANXXpg9wRtphTOnxF9qwvFebySsBUDdIegY-1734726585-1.0.1.1-jf_fuimZsUwZ3uVd8QGN2HJTuG9mCpZhiCkrR1z5cUHnv.gWw4v7j2m1Kv5FV1U207YsvftYdbjAiyK.LaroPg; path=\/; expires=Fri, 20-Dec-24 20:59:45 GMT; domain=.kraken.com; HttpOnly; Secure; SameSite=None, _cfuvid=vg_XoJ6As3pAtcvo5QkneJpnFiqXPDYYqVMZpO5EO8k-1734726585579-0.0.1.1-604800000; path=\/; domain=.kraken.com; HttpOnly; Secure; SameSite=None",
+    "Transfer-Encoding": "chunked",
+    "Vary": "Accept-Encoding",
+    "X-Content-Type-Options": "nosniff",
+    "mxi2s5mytl-pad": "GIe55Sbln*pY8O1VB-q.RHkR|eNNWrbH|K",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+    "x-proxy": "gateway",
+    "x-trace-id": "0ab0b9df0193e5c30b1300070e725d18"
+  },
+  "reason": "OK",
+  "request": {
+    "body": "",
+    "headers": {
+      "Accept": "*\/*",
+      "Accept-Encoding": "gzip, deflate, br, zstd",
+      "Connection": "keep-alive",
+      "User-Agent": "python-requests\/2.31.0"
+    },
+    "method": "GET",
+    "url": "https:\/\/api.kraken.com\/0\/public\/Ticker?pair=XXBTZUSD"
+  },
+  "status_code": 200,
+  "url": "https:\/\/api.kraken.com\/0\/public\/Ticker?pair=XXBTZUSD",
+  "_decoded_content": {
+    "error": [],
+    "result": {
+      "XXBTZUSD": {
+        "a": [
+          "97060.10000",
+          "5",
+          "5.000"
+        ],
+        "b": [
+          "97060.00000",
+          "1",
+          "1.000"
+        ],
+        "c": [
+          "97060.00000",
+          "0.10562337"
+        ],
+        "v": [
+          "2664.52131871",
+          "3119.37414078"
+        ],
+        "p": [
+          "95486.76708",
+          "95730.72766"
+        ],
+        "t": [
+          54535,
+          65170
+        ],
+        "l": [
+          "92159.00000",
+          "92159.00000"
+        ],
+        "h": [
+          "98064.70000",
+          "98307.70000"
+        ],
+        "o": "97431.50000"
+      }
+    }
+  }
+}
