@@ -1,0 +1,58 @@
+{
+  "created_at": "2024-12-20T21:04:22.520093+00:00",
+  "elapsed": 0.138967,
+  "encoding": "utf-8",
+  "expires": "2024-12-20T21:09:22.520065+00:00",
+  "headers": {
+    "Age": "73",
+    "CF-Cache-Status": "HIT",
+    "CF-RAY": "8f52959c9de21361-ATL",
+    "Cache-Control": "max-age=30, public, must-revalidate, s-maxage=60",
+    "Connection": "keep-alive",
+    "Content-Encoding": "gzip",
+    "Content-Type": "application\/json; charset=utf-8",
+    "Date": "Fri, 20 Dec 2024 21:04:22 GMT",
+    "Server": "cloudflare",
+    "Transfer-Encoding": "chunked",
+    "access-control-allow-headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+    "access-control-allow-methods": "POST, PUT, DELETE, GET, OPTIONS",
+    "access-control-allow-origin": "*",
+    "access-control-expose-headers": "link, per-page, total",
+    "access-control-request-method": "*",
+    "alt-svc": "h3=\":443\"; ma=86400",
+    "alternate-protocol": "443:npn-spdy\/2",
+    "etag": "W\/\"68f961bf1554e4342107e3822df31714\"",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "strict-transport-security": "max-age=15724800; includeSubdomains",
+    "vary": "Accept-Encoding, Origin",
+    "x-content-type-options": "nosniff",
+    "x-download-options": "noopen",
+    "x-frame-options": "SAMEORIGIN",
+    "x-permitted-cross-domain-policies": "none",
+    "x-request-id": "3407e715-358f-488c-996d-51fc4a79fc42",
+    "x-runtime": "0.017640",
+    "x-xss-protection": "0"
+  },
+  "reason": "OK",
+  "request": {
+    "body": "",
+    "headers": {
+      "Accept": "*\/*",
+      "Accept-Encoding": "gzip, deflate, br, zstd",
+      "Connection": "keep-alive",
+      "User-Agent": "python-requests\/2.31.0"
+    },
+    "method": "GET",
+    "url": "https:\/\/api.coingecko.com\/api\/v3\/simple\/price?ids=bitcoin&include_24hr_change=true&include_24hr_vol=true&include_market_cap=true&vs_currencies=usd"
+  },
+  "status_code": 200,
+  "url": "https:\/\/api.coingecko.com\/api\/v3\/simple\/price?ids=bitcoin&include_24hr_change=true&include_24hr_vol=true&include_market_cap=true&vs_currencies=usd",
+  "_decoded_content": {
+    "bitcoin": {
+      "usd": 96454,
+      "usd_market_cap": 1909190783262.7756,
+      "usd_24h_vol": 115927287024.22011,
+      "usd_24h_change": 0.3380631795955569
+    }
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "cookies": {
+    "__cf_bm": "puQpoSx_54bxOnAtlre2vmSYw8gc6NdVtro4ngdryjk-1734728697-1.0.1.1-A5NpnBmIyoZwJWhj7JUsSs9nWtUhJD4CUz4mpW7RFXJ2ugToCeLibCLeBj_NwUIwnwFJ3G68_VHtwwGEgzp2aQ",
+    "_cfuvid": "HkWtXvF9fwftyjS8EmLtYezT9LrmPyv88su1Oe7sM4w-1734728697922-0.0.1.1-604800000"
+  },
+  "created_at": "2024-12-20T21:04:57.917158+00:00",
+  "elapsed": 0.345294,
+  "encoding": "utf-8",
+  "expires": "2024-12-20T21:09:57.917135+00:00",
+  "headers": {
+    "CF-Cache-Status": "HIT",
+    "CF-RAY": "8f5296788923bb04-ATL",
+    "Cache-Control": "public, max-age=1",
+    "Connection": "keep-alive",
+    "Content-Encoding": "br",
+    "Content-Type": "application\/json",
+    "Date": "Fri, 20 Dec 2024 21:04:57 GMT",
+    "Last-Modified": "Fri, 20 Dec 2024 21:04:57 GMT",
+    "Server": "cloudflare",
+    "Set-Cookie": "__cf_bm=puQpoSx_54bxOnAtlre2vmSYw8gc6NdVtro4ngdryjk-1734728697-1.0.1.1-A5NpnBmIyoZwJWhj7JUsSs9nWtUhJD4CUz4mpW7RFXJ2ugToCeLibCLeBj_NwUIwnwFJ3G68_VHtwwGEgzp2aQ; path=\/; expires=Fri, 20-Dec-24 21:34:57 GMT; domain=.kraken.com; HttpOnly; Secure; SameSite=None, _cfuvid=HkWtXvF9fwftyjS8EmLtYezT9LrmPyv88su1Oe7sM4w-1734728697922-0.0.1.1-604800000; path=\/; domain=.kraken.com; HttpOnly; Secure; SameSite=None",
+    "Transfer-Encoding": "chunked",
+    "Vary": "Accept-Encoding",
+    "X-Content-Type-Options": "nosniff",
+    "d2-cxtkl-pad": ".bAmBuKzC_9#Z.eavAMr$OsiV3|Sl^ErBdk",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+    "x-proxy": "gateway",
+    "x-trace-id": "0ab0b9df0193e5e3451000073feb1718"
+  },
+  "reason": "OK",
+  "request": {
+    "body": "",
+    "headers": {
+      "Accept": "*\/*",
+      "Accept-Encoding": "gzip, deflate, br, zstd",
+      "Connection": "keep-alive",
+      "User-Agent": "python-requests\/2.31.0"
+    },
+    "method": "GET",
+    "url": "https:\/\/api.kraken.com\/0\/public\/Ticker?pair=ATOMUSD"
+  },
+  "status_code": 200,
+  "url": "https:\/\/api.kraken.com\/0\/public\/Ticker?pair=ATOMUSD",
+  "_decoded_content": {
+    "error": [],
+    "result": {
+      "ATOMUSD": {
+        "a": [
+          "6.829700",
+          "352",
+          "352.000"
+        ],
+        "b": [
+          "6.826600",
+          "3",
+          "3.000"
+        ],
+        "c": [
+          "6.826900",
+          "4.00000000"
+        ],
+        "v": [
+          "161036.42028752",
+          "196195.90240957"
+        ],
+        "p": [
+          "6.506566",
+          "6.585556"
+        ],
+        "t": [
+          2550,
+          2936
+        ],
+        "l": [
+          "5.823500",
+          "5.823500"
+        ],
+        "h": [
+          "7.083300",
+          "7.083300"
+        ],
+        "o": "6.811500"
+      }
+    }
+  }
+}
