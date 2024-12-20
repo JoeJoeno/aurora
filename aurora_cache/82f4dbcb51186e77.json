@@ -1,32 +1,31 @@
 {
   "cookies": {
-    "__cf_bm": "4xWebByNIIe7wba66kGs2sup5ERULfUan.a4z4FAvOY-1734728662-1.0.1.1-1n7psTPtEX78IGHC5DboMyLw9mGke23erCIO0Kvs_rp9JsQlf9YdlrRJIJH5QU3SFqKXMVioUjQcjnyGr429ow",
-    "_cfuvid": "zVk8mdEwnz0vNJXyaPLVpQsuv0MuN7bIr1yge9iyt8I-1734728662505-0.0.1.1-604800000"
+    "__cf_bm": "r.u8w3CdfZSPSKQ36f25Ju9O8dnI7I1yIdnMbHPlv8I-1734734534-1.0.1.1-eE..gzb4zt9oQMr1rGLbsnsx9usxjqFTPyoBZwOBGATxAUD886pMeRL4fRYEPVMOfF3W_HMm6iaw7M7aBGYHeA",
+    "_cfuvid": "KgfVJViJBtVxPpBwC1zi.BA8MNsblUwR0nrJYzdT.Q4-1734734534095-0.0.1.1-604800000"
   },
-  "created_at": "2024-12-20T21:04:22.520535+00:00",
-  "elapsed": 0.13827,
+  "created_at": "2024-12-20T22:42:14.122448+00:00",
+  "elapsed": 0.258692,
   "encoding": "utf-8",
-  "expires": "2024-12-20T21:09:22.520521+00:00",
+  "expires": "2024-12-20T22:47:14.122424+00:00",
   "headers": {
-    "Age": "0",
-    "CF-Cache-Status": "HIT",
-    "CF-RAY": "8f52959c8c278bbb-ATL",
+    "CF-Cache-Status": "EXPIRED",
+    "CF-RAY": "8f5324f5490d78c8-ATL",
     "Cache-Control": "public, max-age=1",
     "Connection": "keep-alive",
     "Content-Encoding": "br",
     "Content-Type": "application\/json",
-    "Date": "Fri, 20 Dec 2024 21:04:22 GMT",
-    "Last-Modified": "Fri, 20 Dec 2024 21:04:22 GMT",
+    "Date": "Fri, 20 Dec 2024 22:42:14 GMT",
+    "Last-Modified": "Fri, 20 Dec 2024 22:42:14 GMT",
     "Server": "cloudflare",
-    "Set-Cookie": "__cf_bm=4xWebByNIIe7wba66kGs2sup5ERULfUan.a4z4FAvOY-1734728662-1.0.1.1-1n7psTPtEX78IGHC5DboMyLw9mGke23erCIO0Kvs_rp9JsQlf9YdlrRJIJH5QU3SFqKXMVioUjQcjnyGr429ow; path=\/; expires=Fri, 20-Dec-24 21:34:22 GMT; domain=.kraken.com; HttpOnly; Secure; SameSite=None, _cfuvid=zVk8mdEwnz0vNJXyaPLVpQsuv0MuN7bIr1yge9iyt8I-1734728662505-0.0.1.1-604800000; path=\/; domain=.kraken.com; HttpOnly; Secure; SameSite=None",
+    "Set-Cookie": "__cf_bm=r.u8w3CdfZSPSKQ36f25Ju9O8dnI7I1yIdnMbHPlv8I-1734734534-1.0.1.1-eE..gzb4zt9oQMr1rGLbsnsx9usxjqFTPyoBZwOBGATxAUD886pMeRL4fRYEPVMOfF3W_HMm6iaw7M7aBGYHeA; path=\/; expires=Fri, 20-Dec-24 23:12:14 GMT; domain=.kraken.com; HttpOnly; Secure; SameSite=None, _cfuvid=KgfVJViJBtVxPpBwC1zi.BA8MNsblUwR0nrJYzdT.Q4-1734734534095-0.0.1.1-604800000; path=\/; domain=.kraken.com; HttpOnly; Secure; SameSite=None",
     "Transfer-Encoding": "chunked",
     "Vary": "Accept-Encoding",
     "X-Content-Type-Options": "nosniff",
-    "dmeud-ziocl1-l-pad": "6M^oDBR!XR%o&GXlTqLjdhck+S7#narsB",
+    "dr6tf9nl-81umv-pad": "Pt-^+dMv|Wg-86DFBU.kDHN!vrp61TkPOf",
     "referrer-policy": "strict-origin-when-cross-origin",
     "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
     "x-proxy": "gateway",
-    "x-trace-id": "0ab0b9ac0193e5e2bc15000754e6d818"
+    "x-trace-id": "0ab0b9960193e63c55930007c8afbf18"
   },
   "reason": "OK",
   "request": {
@@ -35,6 +34,7 @@
       "Accept": "*\/*",
       "Accept-Encoding": "gzip, deflate, br, zstd",
       "Connection": "keep-alive",
+      "If-Modified-Since": "Fri, 20 Dec 2024 22:22:38 GMT",
       "User-Agent": "python-requests\/2.31.0"
     },
     "method": "GET",
@@ -47,30 +47,30 @@
     "result": {
       "XXBTZUSD": {
         "a": [
-          "96363.00000",
-          "1",
-          "1.000"
+          "97109.10000",
+          "3",
+          "3.000"
         ],
         "b": [
-          "96358.50000",
-          "1",
-          "1.000"
+          "97109.00000",
+          "3",
+          "3.000"
         ],
         "c": [
-          "96329.40000",
-          "1.00000000"
+          "97106.60000",
+          "0.00013348"
         ],
         "v": [
-          "2702.50124175",
-          "2996.06629316"
+          "3042.09132374",
+          "3161.28626781"
         ],
         "p": [
-          "95502.44570",
-          "95705.72825"
+          "95585.41850",
+          "95670.26783"
         ],
         "t": [
-          55815,
-          63620
+          59722,
+          62530
         ],
         "l": [
           "92159.00000",

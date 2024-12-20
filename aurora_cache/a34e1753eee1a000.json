@@ -1,0 +1,87 @@
+{
+  "cookies": {
+    "__cf_bm": "a.47qgw_WtVy5l5wzzQNLRZJXf1TASBbBixuqgwUsU8-1734733462-1.0.1.1-OV_O5jRSDs2D2StfhY9Yfd.gHH_1wKtQe8Qwp9ivIk.Lw6ss7YHoRup.w4YgomES.jCkJ7hXPSLwus5uVSk3eg",
+    "_cfuvid": "Gd32hMR7ne.ryjM40Fc7ILBX9_KfG76lXgJuBrj6zqc-1734733462921-0.0.1.1-604800000"
+  },
+  "created_at": "2024-12-20T22:24:22.928483+00:00",
+  "elapsed": 0.125215,
+  "encoding": "utf-8",
+  "expires": "2024-12-20T22:29:22.928467+00:00",
+  "headers": {
+    "Age": "1",
+    "CF-Cache-Status": "HIT",
+    "CF-RAY": "8f530acf2eb0dd1e-ATL",
+    "Cache-Control": "public, max-age=1",
+    "Connection": "keep-alive",
+    "Content-Encoding": "br",
+    "Content-Type": "application\/json",
+    "Date": "Fri, 20 Dec 2024 22:24:22 GMT",
+    "Last-Modified": "Fri, 20 Dec 2024 22:24:21 GMT",
+    "Server": "cloudflare",
+    "Set-Cookie": "__cf_bm=a.47qgw_WtVy5l5wzzQNLRZJXf1TASBbBixuqgwUsU8-1734733462-1.0.1.1-OV_O5jRSDs2D2StfhY9Yfd.gHH_1wKtQe8Qwp9ivIk.Lw6ss7YHoRup.w4YgomES.jCkJ7hXPSLwus5uVSk3eg; path=\/; expires=Fri, 20-Dec-24 22:54:22 GMT; domain=.kraken.com; HttpOnly; Secure; SameSite=None, _cfuvid=Gd32hMR7ne.ryjM40Fc7ILBX9_KfG76lXgJuBrj6zqc-1734733462921-0.0.1.1-604800000; path=\/; domain=.kraken.com; HttpOnly; Secure; SameSite=None",
+    "Transfer-Encoding": "chunked",
+    "Vary": "Accept-Encoding",
+    "X-Content-Type-Options": "nosniff",
+    "fgefdbaux-pad": "k+Vej!T8SB%JupiLlQz^$HYnjm7!%dac",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+    "x-proxy": "gateway",
+    "x-trace-id": "0ab0b9a80193e62bf6280007b9f5e318"
+  },
+  "reason": "OK",
+  "request": {
+    "body": "",
+    "headers": {
+      "Accept": "*\/*",
+      "Accept-Encoding": "gzip, deflate, br, zstd",
+      "Connection": "keep-alive",
+      "User-Agent": "python-requests\/2.31.0"
+    },
+    "method": "GET",
+    "url": "https:\/\/api.kraken.com\/0\/public\/Ticker?pair=AVAXUSD"
+  },
+  "status_code": 200,
+  "url": "https:\/\/api.kraken.com\/0\/public\/Ticker?pair=AVAXUSD",
+  "_decoded_content": {
+    "error": [],
+    "result": {
+      "AVAXUSD": {
+        "a": [
+          "39.36000",
+          "32",
+          "32.000"
+        ],
+        "b": [
+          "39.34000",
+          "3",
+          "3.000"
+        ],
+        "c": [
+          "39.38000",
+          "0.22588259"
+        ],
+        "v": [
+          "182542.90941582",
+          "195098.15964922"
+        ],
+        "p": [
+          "37.04421",
+          "37.17718"
+        ],
+        "t": [
+          15113,
+          15676
+        ],
+        "l": [
+          "33.56000",
+          "33.56000"
+        ],
+        "h": [
+          "40.33000",
+          "40.33000"
+        ],
+        "o": "38.81000"
+      }
+    }
+  }
+}

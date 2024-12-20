@@ -1,17 +1,17 @@
 {
-  "created_at": "2024-12-20T21:04:22.520093+00:00",
-  "elapsed": 0.138967,
+  "created_at": "2024-12-20T22:42:13.967381+00:00",
+  "elapsed": 0.10553,
   "encoding": "utf-8",
-  "expires": "2024-12-20T21:09:22.520065+00:00",
+  "expires": "2024-12-20T22:47:13.967357+00:00",
   "headers": {
-    "Age": "73",
+    "Age": "28",
     "CF-Cache-Status": "HIT",
-    "CF-RAY": "8f52959c9de21361-ATL",
+    "CF-RAY": "8f5324f50f6b4589-ATL",
     "Cache-Control": "max-age=30, public, must-revalidate, s-maxage=60",
     "Connection": "keep-alive",
     "Content-Encoding": "gzip",
     "Content-Type": "application\/json; charset=utf-8",
-    "Date": "Fri, 20 Dec 2024 21:04:22 GMT",
+    "Date": "Fri, 20 Dec 2024 22:42:13 GMT",
     "Server": "cloudflare",
     "Transfer-Encoding": "chunked",
     "access-control-allow-headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
@@ -21,7 +21,7 @@
     "access-control-request-method": "*",
     "alt-svc": "h3=\":443\"; ma=86400",
     "alternate-protocol": "443:npn-spdy\/2",
-    "etag": "W\/\"68f961bf1554e4342107e3822df31714\"",
+    "etag": "W\/\"d4aebb56f8d267e229ed465f71e7662c\"",
     "referrer-policy": "strict-origin-when-cross-origin",
     "strict-transport-security": "max-age=15724800; includeSubdomains",
     "vary": "Accept-Encoding, Origin",
@@ -29,8 +29,8 @@
     "x-download-options": "noopen",
     "x-frame-options": "SAMEORIGIN",
     "x-permitted-cross-domain-policies": "none",
-    "x-request-id": "3407e715-358f-488c-996d-51fc4a79fc42",
-    "x-runtime": "0.017640",
+    "x-request-id": "36906dbc-7334-49b2-8c22-3b3f9e2f1794",
+    "x-runtime": "0.003045",
     "x-xss-protection": "0"
   },
   "reason": "OK",
@@ -40,6 +40,7 @@
       "Accept": "*\/*",
       "Accept-Encoding": "gzip, deflate, br, zstd",
       "Connection": "keep-alive",
+      "If-None-Match": "W\/\"5491334c60c3a4b856f14e4f6fbb8806\"",
       "User-Agent": "python-requests\/2.31.0"
     },
     "method": "GET",
@@ -49,10 +50,10 @@
   "url": "https:\/\/api.coingecko.com\/api\/v3\/simple\/price?ids=bitcoin&include_24hr_change=true&include_24hr_vol=true&include_market_cap=true&vs_currencies=usd",
   "_decoded_content": {
     "bitcoin": {
-      "usd": 96454,
-      "usd_market_cap": 1909190783262.7756,
-      "usd_24h_vol": 115927287024.22011,
-      "usd_24h_change": 0.3380631795955569
+      "usd": 96967,
+      "usd_market_cap": 1919643486419.0288,
+      "usd_24h_vol": 109827551183.09346,
+      "usd_24h_change": -0.3791100512636149
     }
   }
 }

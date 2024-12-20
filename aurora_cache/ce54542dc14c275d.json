@@ -1,8 +1,8 @@
 {
-  "created_at": "2024-12-20T21:04:24.785851+00:00",
-  "elapsed": 0.914004,
+  "created_at": "2024-12-20T22:42:15.871064+00:00",
+  "elapsed": 1.117381,
   "encoding": "UTF-8",
-  "expires": "2024-12-20T21:09:24.785821+00:00",
+  "expires": "2024-12-20T22:47:15.871037+00:00",
   "headers": {
     "Access-Control-Allow-Credentials": "true",
     "Access-Control-Allow-Headers": "Content-Type, Cookie, Set-Cookie, Authorization",
@@ -13,12 +13,12 @@
     "Content-Encoding": "gzip",
     "Content-Security-Policy": "frame-ancestors 'none'",
     "Content-Type": "application\/json; charset=UTF-8",
-    "Date": "Fri, 20 Dec 2024 21:04:24 GMT",
+    "Date": "Fri, 20 Dec 2024 22:42:15 GMT",
     "Server": "nginx",
     "Transfer-Encoding": "chunked",
     "Vary": "Accept-Encoding",
     "X-CryptoCompare-Cache-HIT": "true",
-    "X-CryptoCompare-Server-Id": "cc-api-min-v2-14"
+    "X-CryptoCompare-Server-Id": "cc-api-min-v2-22"
   },
   "reason": "OK",
   "request": {
@@ -42,20 +42,9 @@
     "RateLimit": {},
     "Data": {
       "Aggregated": false,
-      "TimeFrom": 1727528400,
-      "TimeTo": 1734728400,
+      "TimeFrom": 1727532000,
+      "TimeTo": 1734732000,
       "Data": [
-        {
-          "time": 1727528400,
-          "high": 65619.93,
-          "low": 65442.19,
-          "open": 65559.15,
-          "volumefrom": 587.11,
-          "volumeto": 38472714.49,
-          "close": 65547.62,
-          "conversionType": "direct",
-          "conversionSymbol": ""
-        },
         {
           "time": 1727532000,
           "high": 65829.91,
@@ -22047,12 +22036,23 @@
         },
         {
           "time": 1734728400,
-          "high": 96582.96,
-          "low": 96364.44,
+          "high": 96594.19,
+          "low": 95378.12,
           "open": 96385.19,
-          "volumefrom": 282.9,
-          "volumeto": 27284416.7,
-          "close": 96374.28,
+          "volumefrom": 3419.58,
+          "volumeto": 328433689.54,
+          "close": 96567.26,
+          "conversionType": "direct",
+          "conversionSymbol": ""
+        },
+        {
+          "time": 1734732000,
+          "high": 97209.53,
+          "low": 96407.57,
+          "open": 96567.26,
+          "volumefrom": 1125.62,
+          "volumeto": 109005739.06,
+          "close": 97096.79,
           "conversionType": "direct",
           "conversionSymbol": ""
         }

@@ -1,8 +1,8 @@
 {
-  "created_at": "2024-12-20T21:04:29.143583+00:00",
-  "elapsed": 2.39812,
+  "created_at": "2024-12-20T22:41:43.913783+00:00",
+  "elapsed": 0.633101,
   "encoding": "UTF-8",
-  "expires": "2024-12-20T21:09:29.143553+00:00",
+  "expires": "2024-12-20T22:46:43.913756+00:00",
   "headers": {
     "Access-Control-Allow-Credentials": "true",
     "Access-Control-Allow-Headers": "Content-Type, Cookie, Set-Cookie, Authorization",
@@ -13,12 +13,12 @@
     "Content-Encoding": "gzip",
     "Content-Security-Policy": "frame-ancestors 'none'",
     "Content-Type": "application\/json; charset=UTF-8",
-    "Date": "Fri, 20 Dec 2024 21:04:29 GMT",
+    "Date": "Fri, 20 Dec 2024 22:41:43 GMT",
     "Server": "nginx",
     "Transfer-Encoding": "chunked",
     "Vary": "Accept-Encoding",
     "X-CryptoCompare-Cache-HIT": "false",
-    "X-CryptoCompare-Server-Id": "cc-api-min-v2-19"
+    "X-CryptoCompare-Server-Id": "cc-api-min-v2-34"
   },
   "reason": "OK",
   "request": {
@@ -35,6 +35,6 @@
   "status_code": 200,
   "url": "https:\/\/min-api.cryptocompare.com\/data\/price?fsym=AR&tsyms=USD",
   "_decoded_content": {
-    "USD": 16.99
+    "USD": 17.2
   }
 }

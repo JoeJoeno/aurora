@@ -1,8 +1,8 @@
 {
-  "created_at": "2024-12-20T21:04:36.935576+00:00",
-  "elapsed": 7.581499,
+  "created_at": "2024-12-20T22:41:45.363984+00:00",
+  "elapsed": 1.321051,
   "encoding": "UTF-8",
-  "expires": "2024-12-20T21:09:36.935545+00:00",
+  "expires": "2024-12-20T22:46:45.363955+00:00",
   "headers": {
     "Access-Control-Allow-Credentials": "true",
     "Access-Control-Allow-Headers": "Content-Type, Cookie, Set-Cookie, Authorization",
@@ -13,12 +13,12 @@
     "Content-Encoding": "gzip",
     "Content-Security-Policy": "frame-ancestors 'none'",
     "Content-Type": "application\/json; charset=UTF-8",
-    "Date": "Fri, 20 Dec 2024 21:04:36 GMT",
+    "Date": "Fri, 20 Dec 2024 22:41:44 GMT",
     "Server": "nginx",
     "Transfer-Encoding": "chunked",
     "Vary": "Accept-Encoding",
     "X-CryptoCompare-Cache-HIT": "true",
-    "X-CryptoCompare-Server-Id": "cc-api-min-v2-14"
+    "X-CryptoCompare-Server-Id": "cc-api-min-v2-23"
   },
   "reason": "OK",
   "request": {
@@ -42,20 +42,9 @@
     "RateLimit": {},
     "Data": {
       "Aggregated": false,
-      "TimeFrom": 1727528400,
-      "TimeTo": 1734728400,
+      "TimeFrom": 1727532000,
+      "TimeTo": 1734732000,
       "Data": [
-        {
-          "time": 1727528400,
-          "high": 22.48,
-          "low": 22.27,
-          "open": 22.48,
-          "volumefrom": 147.02,
-          "volumeto": 3281.33,
-          "close": 22.32,
-          "conversionType": "multiply",
-          "conversionSymbol": "BTC"
-        },
         {
           "time": 1727532000,
           "high": 22.61,
@@ -22048,11 +22037,22 @@
         {
           "time": 1734728400,
           "high": 17.06,
-          "low": 17.06,
+          "low": 16.69,
           "open": 17.06,
-          "volumefrom": 0,
-          "volumeto": 0,
-          "close": 17.06,
+          "volumefrom": 1135.74,
+          "volumeto": 19293.1,
+          "close": 16.98,
+          "conversionType": "direct",
+          "conversionSymbol": ""
+        },
+        {
+          "time": 1734732000,
+          "high": 17.35,
+          "low": 16.95,
+          "open": 16.98,
+          "volumefrom": 849.18,
+          "volumeto": 14555.43,
+          "close": 17.18,
           "conversionType": "direct",
           "conversionSymbol": ""
         }
