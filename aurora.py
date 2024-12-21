@@ -8,16 +8,11 @@ import plotly.graph_objs as go
 import numpy as np
 
 from coin_config import COIN_CONFIG
+
 from indicators import calc_sma, calc_ema, calc_stochastic, calc_macd, calc_rsi
 
-from concurrent.futures import ThreadPoolExecutor
-import requests_cache
-from functools import lru_cache
-
-requests_cache.install_cache(cache_name='aurora_cache', backend='filesystem', expire_after=300)
-
-PRICE_CACHE_TTL = 10
-HISTORICAL_DATA_CACHE_TTL = 600
+PRICE_CACHE_TTL = 1
+HISTORICAL_DATA_CACHE_TTL = 300
 COINGECKO_CACHE_TTL = 60
 
 price_cache = {}
@@ -30,9 +25,19 @@ app.title = "Aurora"
 
 AURORA_LOGO_URL = app.get_asset_url('aurora_logo.png')
 
-@lru_cache(maxsize=128)
-def fetch_current_price_and_data_cached(coin):
-    """Fetch current price and coingecko data with built-in caching due to requests_cache and lru_cache."""
+from concurrent.futures import ThreadPoolExecutor
+
+def fetch_current_price_and_data(coin):
+    now = time.time()
+    
+    # Check cache first
+    if coin in price_cache and coin in coingecko_extra_cache:
+        cached_time_price, cached_price = price_cache[coin]
+        cached_time_data, cached_data = coingecko_extra_cache[coin]
+        if now - cached_time_price < PRICE_CACHE_TTL and now - cached_time_data < COINGECKO_CACHE_TTL:
+            return cached_price, cached_data
+
+    # Get coin-specific configuration
     conf = COIN_CONFIG[coin]
     coingecko_url = (f"https://api.coingecko.com/api/v3/simple/price"
                      f"?ids={conf['coingecko_id']}&vs_currencies=usd"
@@ -40,10 +45,12 @@ def fetch_current_price_and_data_cached(coin):
     cryptocompare_url = f"https://min-api.cryptocompare.com/data/price?fsym={conf['cc_symbol']}&tsyms=USD"
     kraken_url = f"https://api.kraken.com/0/public/Ticker?pair={conf['kraken_pair']}" if conf['kraken_pair'] else None
 
+    # List of URLs to fetch
     urls = [coingecko_url, cryptocompare_url]
     if kraken_url:
         urls.append(kraken_url)
 
+    # Fetch data concurrently
     def fetch_url(url):
         try:
             response = requests.get(url, timeout=5)
@@ -56,13 +63,13 @@ def fetch_current_price_and_data_cached(coin):
     with ThreadPoolExecutor() as executor:
         results = list(executor.map(fetch_url, urls))
 
+    # Parse results
     prices = []
     coingecko_data = None
 
     for url, data in results:
         if not data:
             continue
-        conf = COIN_CONFIG[coin]
         if "coingecko" in url:
             coingecko_data = data.get(conf['coingecko_id'], {})
             if 'usd' in coingecko_data:
@@ -73,72 +80,105 @@ def fetch_current_price_and_data_cached(coin):
             pair = list(data['result'].keys())[0]
             prices.append(float(data['result'][pair]['c'][0]))
 
+    # Calculate average price
     if prices:
         avg_price = sum(prices) / len(prices)
+        price_cache[coin] = (time.time(), avg_price)
+        if coingecko_data:
+            coingecko_extra_cache[coin] = (time.time(), coingecko_data)
         return avg_price, coingecko_data
     else:
         return None, None
 
-@lru_cache(maxsize=128)
-def fetch_historical_data_cached(coin, interval, timeframe):
-    """Fetch and cache historical data using lru_cache and requests_cache."""
+def fetch_historical_data(coin, interval, timeframe):
+    now = time.time()
+    cache_key = (coin, interval, timeframe)
+    if cache_key in historical_data_cache:
+        cached_time, cached_data = historical_data_cache[cache_key]
+        if now - cached_time < HISTORICAL_DATA_CACHE_TTL:
+            return cached_data
+
     cc_symbol = COIN_CONFIG[coin]["cc_symbol"]
-    limit = 2000
+    limit = 2000  # Increased limit to ensure sufficient data
     aggregate = 1
     url = ""
 
-    if interval.endswith("min"):
-        aggregate = int(interval.rstrip("min"))
-        url = f"https://min-api.cryptocompare.com/data/v2/histominute?fsym={cc_symbol}&tsym=USD&limit={limit}&aggregate={aggregate}"
-    elif interval.endswith("hour"):
-        aggregate_str = interval.rstrip("hour")
-        aggregate = int(aggregate_str) if aggregate_str.isdigit() else 1
-        url = f"https://min-api.cryptocompare.com/data/v2/histohour?fsym={cc_symbol}&tsym=USD&limit={limit}&aggregate={aggregate}"
-    else:
-        # Daily data
-        url = f"https://min-api.cryptocompare.com/data/v2/histoday?fsym={cc_symbol}&tsym=USD&limit={limit}&aggregate=1"
+    # Determine the endpoint and parameters based on interval
+    try:
+        if interval.endswith("min"):
+            aggregate = int(interval.rstrip("min"))
+            url = f"https://min-api.cryptocompare.com/data/v2/histominute?fsym={cc_symbol}&tsym=USD&limit={limit}&aggregate={aggregate}"
+        elif interval.endswith("hour"):
+            aggregate_str = interval.rstrip("hour")
+            aggregate = int(aggregate_str) if aggregate_str.isdigit() else 1
+            url = f"https://min-api.cryptocompare.com/data/v2/histohour?fsym={cc_symbol}&tsym=USD&limit={limit}&aggregate={aggregate}"
+        elif interval in ["1hour","1day", "1week", "1month", "3month", "6month", "1year", "ALL"]:
+            aggregate = 1
+            url = f"https://min-api.cryptocompare.com/data/v2/histoday?fsym={cc_symbol}&tsym=USD&limit={limit}&aggregate={aggregate}"
+        else:
+            # Default to hourly if unknown interval
+            url = f"https://min-api.cryptocompare.com/data/v2/histohour?fsym={cc_symbol}&tsym=USD&limit={limit}&aggregate=1"
 
-    response = requests.get(url, timeout=10)
-    response.raise_for_status()
-    data = response.json()["Data"]["Data"]
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        data = response.json()["Data"]["Data"]
 
-    if not data:
-        return [], [], [], [], [], []
+        if not data:
+            print(f"No data received for coin: {coin}, interval: {interval}, timeframe: {timeframe}")
+            return [], [], [], [], [], []
 
-    times = [datetime.utcfromtimestamp(d["time"]) for d in data]
-    opens = [d["open"] for d in data]
-    highs = [d["high"] for d in data]
-    lows = [d["low"] for d in data]
-    closes = [d["close"] for d in data]
-    volumes = [d["volumefrom"] for d in data]
+        # Convert timestamps to datetime objects
+        times = [datetime.utcfromtimestamp(d["time"]) for d in data]
+        opens = [d["open"] for d in data]
+        highs = [d["high"] for d in data]
+        lows = [d["low"] for d in data]
+        closes = [d["close"] for d in data]
+        volumes = [d["volumefrom"] for d in data]
 
-    # Determine start time based on timeframe
-    end_time = times[-1]
-    timeframe_map = {
-        "1hour": timedelta(hours=1),
-        "1day": timedelta(days=1),
-        "1week": timedelta(days=7),
-        "1month": timedelta(days=30),
-        "3month": timedelta(days=90),
-        "6month": timedelta(days=180),
-        "1year": timedelta(days=365),
-        "ALL": None,
-    }
-
-    if timeframe in timeframe_map:
-        if timeframe_map[timeframe] is None:
+        # Calculate the start time based on timeframe
+        end_time = times[-1]
+        if timeframe == "1hour":
+            start_time = end_time - timedelta(hours=1)
+        elif timeframe == "1day":
+            start_time = end_time - timedelta(days=1)
+        elif timeframe == "1week":
+            start_time = end_time - timedelta(days=7)
+        elif timeframe == "1month":
+            start_time = end_time - timedelta(days=30)
+        elif timeframe == "3month":
+            start_time = end_time - timedelta(days=90)
+        elif timeframe == "6month":
+            start_time = end_time - timedelta(days=180)
+        elif timeframe == "1year":
+            start_time = end_time - timedelta(days=365)
+        elif timeframe == "ALL":
             start_time = datetime(1970, 1, 1)
         else:
-            start_time = end_time - timeframe_map[timeframe]
-    else:
-        start_time = end_time - timedelta(days=30)
+            start_time = end_time - timedelta(days=30)  # Default to 1 month
 
-    filtered_data = [(t, o, h, l, c, v) for t, o, h, l, c, v in zip(times, opens, highs, lows, closes, volumes) if t >= start_time]
-    if not filtered_data:
+        # Filter the data based on start_time
+        filtered_times = []
+        filtered_opens = []
+        filtered_highs = []
+        filtered_lows = []
+        filtered_closes = []
+        filtered_volumes = []
+        for t, o, h, l, c, v in zip(times, opens, highs, lows, closes, volumes):
+            if t >= start_time:
+                filtered_times.append(t)
+                filtered_opens.append(o)
+                filtered_highs.append(h)
+                filtered_lows.append(l)
+                filtered_closes.append(c)
+                filtered_volumes.append(v)
+
+        # Cache the filtered data
+        historical_data_cache[cache_key] = (now, (filtered_times, filtered_opens, filtered_highs, filtered_lows, filtered_closes, filtered_volumes))
+        return filtered_times, filtered_opens, filtered_highs, filtered_lows, filtered_closes, filtered_volumes
+    except Exception as e:
+        print(f"Error fetching historical data for {coin} with interval {interval} and timeframe {timeframe}: {e}")
         return [], [], [], [], [], []
 
-    ftimes, fopens, fhighs, flows, fcloses, fvolumes = zip(*filtered_data)
-    return list(ftimes), list(fopens), list(fhighs), list(flows), list(fcloses), list(fvolumes)
 
 def home_layout():
     return html.Div(
@@ -190,6 +230,45 @@ def home_layout():
      )
 
 def main_layout(selected_coin="BTC"):
+    # Define intervals by category
+    minutes  = [
+        {"label": "1 Minute", "value": "1min"},
+        {"label": "3 Minutes", "value": "3min"},
+        {"label": "5 Minutes", "value": "5min"},
+        {"label": "10 Minutes", "value": "10min"},
+        {"label": "15 Minutes", "value": "15min"},
+        {"label": "30 Minutes", "value": "30min"},
+        {"label": "45 Minutes", "value": "45min"},
+    ]
+
+    hours = [
+        {"label": "1 Hour", "value": "1hour"},
+        {"label": "2 Hours", "value": "2hour"},
+        {"label": "3 Hours", "value": "3hour"},
+        {"label": "4 Hours", "value": "4hour"},
+        {"label": "5 Hours", "value": "5hour"},
+    ]
+
+    days = [
+        {"label": "1 Day", "value": "1day"},
+        {"label": "5 Days", "value": "5day"},
+        {"label": "1 Week", "value": "7day"},
+        {"label": "2 Weeks", "value": "14day"},
+        {"label": "1 Month", "value": "30day"},
+        {"label": "3 Months", "value": "90day"},
+        {"label": "6 Months", "value": "180day"},
+        {"label": "12 Months", "value": "365day"},
+    ]
+
+    # Combine them with headers as disabled options
+    interval_options = [
+        {"label": "Minutes", "value": None, "disabled": True},
+    ] + minutes + [
+        {"label": "Hours", "value": None, "disabled": True},
+    ] + hours + [
+        {"label": "Days", "value": None, "disabled": True},
+    ] + days
+    
     return html.Div([
         # Top Bar
         html.Div(className="top-bar", children=[
@@ -239,23 +318,14 @@ def main_layout(selected_coin="BTC"):
                 html.Div(className="interval-dropdown-container", children=[
                     dcc.Dropdown(
                         id="interval-dropdown",
-                        options=[
-                            {"label": "1 Minute", "value": "1min"},
-                            {"label": "5 Minutes", "value": "5min"},
-                            {"label": "15 Minutes", "value": "15min"},
-                            {"label": "30 Minutes", "value": "30min"},
-                            {"label": "1 Hour", "value": "1hour"},
-                            {"label": "5 Hours", "value": "5hour"},
-                            {"label": "1 Day", "value": "1day"},
-                            {"label": "1 Week", "value": "1week"},
-                            {"label": "1 Month", "value": "1month"},
-                        ],
+                        options=interval_options,
                         value="1hour",  # Default value
                         clearable=False,
                         style={"width": "120px", "color": "black"}
                     ),
                 ]),
             ]),
+
 
             # Timeframe Duration Buttons
             html.Div(className="timeframe-buttons", children=[
@@ -313,10 +383,6 @@ def main_layout(selected_coin="BTC"):
         ),
 
         dcc.Store(id='last-price-store', data=None),
-        dcc.Store(id='data-params-store', data={"coin": "BTC", "interval": "1hour", "timeframe": "1month"}),
-        # Store precomputed indicators
-        dcc.Store(id='indicators-store', data=None),
-        dcc.Store(id='historical-data-store', data=None),
         dcc.Store(id='toggles-store', data={
             "coin": selected_coin,
             "interval": "1hour",
@@ -467,20 +533,11 @@ def update_chart(toggles, n_intervals, last_price):
     stochastic_on = toggles.get("stochastic_on", False)
     ema_on = toggles.get("ema_on", False)
 
-    price, coingecko_data = fetch_current_price_and_data_cached(coin)
-    times, opens, highs, lows, closes, volumes = fetch_historical_data_cached(coin, interval, timeframe)
-    
-
-    t_times, t_opens, t_highs, t_lows, t_closes, t_volumes = fetch_historical_data_cached(coin, "1day", timeframe)
-    
-    if t_closes:
-        start_price = t_closes[0]
-        end_price = t_closes[-1]
-        timeframe_hist_change = ((end_price - start_price) / start_price) * 100
-    else:
-        timeframe_hist_change = 0.0
+    price, coingecko_data = fetch_current_price_and_data(coin)
+    times, opens, highs, lows, closes, volumes = fetch_historical_data(coin, interval, timeframe)
 
     if not times:
+        # If no data is returned, avoid plotting
         fig = go.Figure()
         fig.update_layout(
             paper_bgcolor="#121212",
@@ -488,36 +545,33 @@ def update_chart(toggles, n_intervals, last_price):
             font=dict(color='white')
         )
         price_text = "..."
-        # Use timeframe_hist_change for the percentage display
-        if timeframe_hist_change > 0:
-            change_text = f"+{timeframe_hist_change:.2f}%"
-            change_class = "percentage-green"
-        elif timeframe_hist_change < 0:
-            change_text = f"{timeframe_hist_change:.2f}%"
-            change_class = "percentage-red"
-        else:
-            change_text = f"{timeframe_hist_change:.2f}%"
-            change_class = "percentage-white"
+        change_text = "0.00%"
+        change_class = "percentage-white"
         current_price_store = last_price
     else:
         if price is None:
             price_text = "..."
             current_price_store = last_price
+            hist_change = 0.0
         else:
             price_text = f"${price:.4f}"
             current_price_store = price
+            if len(closes) > 1:
+                start_price = closes[0]
+                end_price = closes[-1]
+                hist_change = ((end_price - start_price)/start_price)*100
+            else:
+                hist_change = 0.0
 
-        if timeframe_hist_change > 0:
-            change_text = f"+{timeframe_hist_change:.2f}%"
+        if hist_change > 0:
+            change_text = f"+{hist_change:.2f}%"
             change_class = "percentage-green"
-        elif timeframe_hist_change < 0:
-            change_text = f"{timeframe_hist_change:.2f}%"
+        elif hist_change < 0:
+            change_text = f"{hist_change:.2f}%"
             change_class = "percentage-red"
         else:
-            change_text = f"{timeframe_hist_change:.2f}%"
+            change_text = f"{hist_change:.2f}%"
             change_class = "percentage-white"
-
-        fig = go.Figure()
 
         fig = go.Figure()
 
@@ -726,6 +780,7 @@ def get_sorted_dropdown_options():
         dropdown_options.extend(sorted(coins, key=lambda x: x["label"]))
     
     return dropdown_options
+
 
 if __name__ == "__main__":
     app.run_server(debug=False)
