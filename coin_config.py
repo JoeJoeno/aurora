@@ -172,56 +172,14 @@ COIN_CONFIG = {
         "cc_symbol": "ENJ",
         "kraken_pair": "ENJUSD",
         "logo": "https://cryptologos.cc/logos/enjin-coin-enj-logo.svg?v=023",
-        "category": "Metaverse"
-    },
-    "AXS": {
-        "coingecko_id": "axie-infinity",
-        "cc_symbol": "AXS",
-        "kraken_pair": "AXSUSD",
-        "logo": "https://cryptologos.cc/logos/axie-infinity-axs-logo.svg?v=023",
-        "category": "Gaming"
-    },
-    "COMP": {
-        "coingecko_id": "compound",
-        "cc_symbol": "COMP",
-        "kraken_pair": "COMPUSD",
-        "logo": "https://cryptologos.cc/logos/compound-comp-logo.svg?v=023",
-        "category": "DeFi"
-    },
-    "CRV": {
-        "coingecko_id": "curve-dao-token",
-        "cc_symbol": "CRV",
-        "kraken_pair": "CRVUSD",
-        "logo": "https://cryptologos.cc/logos/curve-dao-token-crv-logo.svg?v=023",
-        "category": "DeFi"
-    },
-    "STX": {
-        "coingecko_id": "stacks",
-        "cc_symbol": "STX",
-        "kraken_pair": "STXUSD",
-        "logo": "https://cryptologos.cc/logos/stacks-stx-logo.svg?v=023",
-        "category": "Layer 2"
-    },
-    "AXS": {
-        "coingecko_id": "axie-infinity",
-        "cc_symbol": "AXS",
-        "kraken_pair": "AXSUSD",
-        "logo": "https://cryptologos.cc/logos/axie-infinity-axs-logo.svg?v=023",
-        "category": "Gaming"
-    },
-    "MANA": {
-        "coingecko_id": "decentraland",
-        "cc_symbol": "MANA",
-        "kraken_pair": "MANAUSD",
-        "logo": "https://cryptologos.cc/logos/decentraland-mana-logo.svg?v=023",
-        "category": "Metaverse"
-    },
-    "ENJ": {
-        "coingecko_id": "enjincoin",
-        "cc_symbol": "ENJ",
-        "kraken_pair": "ENJUSD",
-        "logo": "https://cryptologos.cc/logos/enjin-coin-enj-logo.svg?v=023",
         "category": "Layer 1"
+    },
+    "AXS": {
+        "coingecko_id": "axie-infinity",
+        "cc_symbol": "AXS",
+        "kraken_pair": "AXSUSD",
+        "logo": "https://cryptologos.cc/logos/axie-infinity-axs-logo.svg?v=023",
+        "category": "Gaming"
     },
     "GODS": {
         "coingecko_id": "gods-unchained",
@@ -229,20 +187,6 @@ COIN_CONFIG = {
         "kraken_pair": None,
         "logo": "https://cryptologos.cc/logos/gods-unchained-gods-logo.svg?v=023",
         "category": "Gaming"
-    },
-    "COMP": {
-        "coingecko_id": "compound",
-        "cc_symbol": "COMP",
-        "kraken_pair": "COMPUSD",
-        "logo": "https://cryptologos.cc/logos/compound-comp-logo.svg?v=023",
-        "category": "DeFi"
-    },
-    "CRV": {
-        "coingecko_id": "curve-dao-token",
-        "cc_symbol": "CRV",
-        "kraken_pair": "CRVUSD",
-        "logo": "https://cryptologos.cc/logos/curve-dao-token-crv-logo.svg?v=023",
-        "category": "Exchange"
     },
     "YFI": {
         "coingecko_id": "yearn-finance",
@@ -257,62 +201,6 @@ COIN_CONFIG = {
         "kraken_pair": "SNXUSD",
         "logo": "https://cryptologos.cc/logos/synthetix-snx-logo.svg?v=023",
         "category": "Layer 1"
-    },
-    "XMR": {
-        "coingecko_id": "monero",
-        "cc_symbol": "XMR",
-        "kraken_pair": "XMRUSD",
-        "logo": "https://cryptologos.cc/logos/monero-xmr-logo.svg?v=023",
-        "category": "Payments"
-    },
-    "ZEC": {
-        "coingecko_id": "zcash",
-        "cc_symbol": "ZEC",
-        "kraken_pair": "ZECUSD",
-        "logo": "https://cryptologos.cc/logos/zcash-zec-logo.svg?v=023",
-        "category": "Payments"
-    },
-    "AR": {
-        "coingecko_id": "arweave",
-        "cc_symbol": "AR",
-        "kraken_pair": None,
-        "logo": "https://cryptologos.cc/logos/arweave-ar-logo.svg?v=023",
-        "category": "DeFi"
-    },
-    "STORJ": {
-        "coingecko_id": "storj",
-        "cc_symbol": "STORJ",
-        "kraken_pair": None,
-        "logo": "https://cryptologos.cc/logos/storj-storj-logo.svg?v=023",
-        "category": "DeFi"
-    },
-    "OCEAN": {
-        "coingecko_id": "ocean-protocol",
-        "cc_symbol": "OCEAN",
-        "kraken_pair": "OCEANUSD",
-        "logo": "https://cryptologos.cc/logos/ocean-protocol-ocean-logo.svg?v=023",
-        "category": "Layer 2"
-    },
-    "ICX": {
-        "coingecko_id": "icon",
-        "cc_symbol": "ICX",
-        "kraken_pair": "ICXUSD",
-        "logo": "https://cryptologos.cc/logos/icon-icx-logo.svg?v=023",
-        "category": "Layer 1"
-    },
-    "REN": {
-        "coingecko_id": "ren",
-        "cc_symbol": "REN",
-        "kraken_pair": None,
-        "logo": "https://cryptologos.cc/logos/ren-ren-logo.svg?v=023",
-        "category": "DeFi"
-    },
-    "DAG": {
-        "coingecko_id": "constellation-labs",
-        "cc_symbol": "DAG",
-        "kraken_pair": None,
-        "logo": "https://cryptologos.cc/logos/constellation-dag-logo.svg?v=023",
-        "category": "DeFi"
     },
     "USDT": {
         "coingecko_id": "tether",
@@ -355,5 +243,34 @@ COIN_CONFIG = {
         "kraken_pair": None,
         "logo": "https://cryptologos.cc/logos/mina-mina-logo.svg?v=023",
         "category": "Layer 1"
-    }
+    },
+    "OCEAN": {
+        "coingecko_id": "ocean-protocol",
+        "cc_symbol": "OCEAN",
+        "kraken_pair": "OCEANUSD",
+        "logo": "https://cryptologos.cc/logos/ocean-protocol-ocean-logo.svg?v=023",
+        "category": "Layer 2"
+    },
+    "ICX": {
+        "coingecko_id": "icon",
+        "cc_symbol": "ICX",
+        "kraken_pair": "ICXUSD",
+        "logo": "https://cryptologos.cc/logos/icon-icx-logo.svg?v=023",
+        "category": "Layer 1"
+    },
+    "REN": {
+        "coingecko_id": "ren",
+        "cc_symbol": "REN",
+        "kraken_pair": None,
+        "logo": "https://cryptologos.cc/logos/ren-ren-logo.svg?v=023",
+        "category": "DeFi"
+    },
+    "DAG": {
+        "coingecko_id": "constellation-labs",
+        "cc_symbol": "DAG",
+        "kraken_pair": None,
+        "logo": "https://cryptologos.cc/logos/constellation-dag-logo.svg?v=023",
+        "category": "DeFi"
+    },
 }
+

@@ -1,3 +1,4 @@
+
 import requests
 import time
 from datetime import datetime, timedelta
@@ -6,6 +7,22 @@ from dash import html, dcc
 from dash.dependencies import Input, Output, State
 import plotly.graph_objs as go
 import numpy as np
+from indicators import (
+    calc_sma, calc_rsi, calc_ema, calc_bollinger_bands, calc_atr, calc_vwap,
+    calc_stochastic, calc_williams_r
+)
+
+# Map dropdown values to their corresponding functions
+INDICATOR_FUNCTIONS = {
+    "sma": calc_sma,
+    "rsi": calc_rsi,
+    "ema": calc_ema,
+    "bollinger_bands": calc_bollinger_bands,
+    "atr": calc_atr,
+    "vwap": calc_vwap,
+    "stochastic": calc_stochastic,
+    "williams_r": calc_williams_r
+}
 
 from coin_config import COIN_CONFIG
 
@@ -179,6 +196,20 @@ def fetch_historical_data(coin, interval, timeframe):
         print(f"Error fetching historical data for {coin} with interval {interval} and timeframe {timeframe}: {e}")
         return [], [], [], [], [], []
 
+def get_indicators_options():
+    """
+    Dynamically generate dropdown options for the indicators dropdown.
+    """
+    return [
+        {"label": "SMA (Simple Moving Average)", "value": "sma"},
+        {"label": "RSI (Relative Strength Index)", "value": "rsi"},
+        {"label": "EMA (Exponential Moving Average)", "value": "ema"},
+        {"label": "Bollinger Bands", "value": "bollinger_bands"},
+        {"label": "ATR (Average True Range)", "value": "atr"},
+        {"label": "VWAP (Volume Weighted Average Price)", "value": "vwap"},
+        {"label": "Stochastic Oscillator", "value": "stochastic"},
+        {"label": "Williams %R", "value": "williams_r"}
+    ]
 
 def home_layout():
     return html.Div(
@@ -313,6 +344,7 @@ def main_layout(selected_coin="BTC"):
                         style={"width": "150px", "color": "black"}
                     ),
                 ]),
+
 
                 # Interval Selection Dropdown
                 html.Div(className="interval-dropdown-container", children=[
@@ -513,222 +545,129 @@ def update_toggles(selected_coin,
         Output("price-change", "children"),
         Output("price-change", "className"),
         Output("candlestick-chart", "figure"),
-        Output('last-price-store', 'data')
+        Output("last-price-store", "data")
     ],
     [
         Input("toggles-store", "data"),
         Input("update-interval", "n_intervals")
     ],
-    [State('last-price-store', 'data')]
+    [State("last-price-store", "data")]
 )
 def update_chart(toggles, n_intervals, last_price):
     coin = toggles.get("coin", "BTC")
     interval = toggles.get("interval", "1hour")
     timeframe = toggles.get("timeframe", "1month")
-    chart_type = toggles.get("chart_type", "candle")
-    sma_on = toggles.get("sma_on", False)
-    rsi_on = toggles.get("rsi_on", False)
-    volume_on = toggles.get("volume_on", False)
-    macd_on = toggles.get("macd_on", False)
-    stochastic_on = toggles.get("stochastic_on", False)
-    ema_on = toggles.get("ema_on", False)
+    selected_indicators = toggles.get("indicators", ["sma"])  # Default to SMA
 
+    # Fetch current price and historical data
     price, coingecko_data = fetch_current_price_and_data(coin)
     times, opens, highs, lows, closes, volumes = fetch_historical_data(coin, interval, timeframe)
 
     if not times:
-        # If no data is returned, avoid plotting
+        # No data available, return an empty chart
         fig = go.Figure()
-        fig.update_layout(
-            paper_bgcolor="#121212",
-            plot_bgcolor="#220d2b",
-            font=dict(color='white')
+        fig.update_layout(paper_bgcolor="#121212", plot_bgcolor="#220d2b", font=dict(color="white"))
+        return (
+            COIN_CONFIG[coin]["logo"],  # Coin logo
+            "...",                      # Current price
+            "0.00%",                   # Change percentage
+            "percentage-white",        # Change percentage class
+            fig,                       # Empty figure
+            last_price                 # Keep last price
         )
+
+    # Calculate historical price change percentage
+    if price is None:
         price_text = "..."
-        change_text = "0.00%"
-        change_class = "percentage-white"
         current_price_store = last_price
+        hist_change = 0.0
     else:
-        if price is None:
-            price_text = "..."
-            current_price_store = last_price
+        price_text = f"${price:.4f}"
+        current_price_store = price
+        if len(closes) > 1:
+            start_price = closes[0]
+            end_price = closes[-1]
+            hist_change = ((end_price - start_price) / start_price) * 100
+        else:
             hist_change = 0.0
-        else:
-            price_text = f"${price:.4f}"
-            current_price_store = price
-            if len(closes) > 1:
-                start_price = closes[0]
-                end_price = closes[-1]
-                hist_change = ((end_price - start_price)/start_price)*100
-            else:
-                hist_change = 0.0
 
-        if hist_change > 0:
-            change_text = f"+{hist_change:.2f}%"
-            change_class = "percentage-green"
-        elif hist_change < 0:
-            change_text = f"{hist_change:.2f}%"
-            change_class = "percentage-red"
-        else:
-            change_text = f"{hist_change:.2f}%"
-            change_class = "percentage-white"
+    # Set price change color class
+    if hist_change > 0:
+        change_text = f"+{hist_change:.2f}%"
+        change_class = "percentage-green"
+    elif hist_change < 0:
+        change_text = f"{hist_change:.2f}%"
+        change_class = "percentage-red"
+    else:
+        change_text = f"{hist_change:.2f}%"
+        change_class = "percentage-white"
 
-        fig = go.Figure()
+    # Initialize figure with candlestick chart
+    fig = go.Figure()
+    fig.add_trace(go.Candlestick(
+        x=times,
+        open=opens,
+        high=highs,
+        low=lows,
+        close=closes,
+        increasing_line_color="green",
+        decreasing_line_color="red",
+        name="Candlestick"
+    ))
 
-        if chart_type == "candle":
-            fig.add_trace(go.Candlestick(
-                x=times,
-                open=opens,
-                high=highs,
-                low=lows,
-                close=closes,
-                increasing_line_color="green",
-                decreasing_line_color="red",
-                name=coin
-            ))
-        else:
-            fig.add_trace(go.Scatter(
-                x=times, y=closes, mode='lines', line=dict(color='#ff8aff', width=2),
-                name=coin
-            ))
+    # Calculate and add selected indicators
+    for indicator in selected_indicators:
+        if indicator in INDICATOR_FUNCTIONS:
+            func = INDICATOR_FUNCTIONS[indicator]
+            try:
+                if indicator in ["sma", "ema", "rsi"]:
+                    indicator_values = func(closes)
+                    fig.add_trace(go.Scatter(
+                        x=times,
+                        y=indicator_values,
+                        mode="lines",
+                        name=indicator.upper()
+                    ))
+                elif indicator == "bollinger_bands":
+                    upper_band, lower_band = func(closes)
+                    fig.add_trace(go.Scatter(x=times, y=upper_band, mode="lines", name="Upper Band"))
+                    fig.add_trace(go.Scatter(x=times, y=lower_band, mode="lines", name="Lower Band"))
+                elif indicator == "atr":
+                    atr_values = func(highs, lows, closes)
+                    fig.add_trace(go.Scatter(x=times, y=atr_values, mode="lines", name="ATR"))
+                elif indicator == "vwap":
+                    vwap_values = func(highs, lows, closes, volumes)
+                    fig.add_trace(go.Scatter(x=times, y=vwap_values, mode="lines", name="VWAP"))
+                elif indicator == "stochastic":
+                    stochastic_k, stochastic_d = func(highs, lows, closes)
+                    fig.add_trace(go.Scatter(x=times, y=stochastic_k, mode="lines", name="%K"))
+                    fig.add_trace(go.Scatter(x=times, y=stochastic_d, mode="lines", name="%D"))
+                elif indicator == "williams_r":
+                    williams_values = func(highs, lows, closes)
+                    fig.add_trace(go.Scatter(x=times, y=williams_values, mode="lines", name="Williams %R"))
+            except Exception as e:
+                print(f"Error calculating {indicator}: {e}")
 
-        closes_array = np.array(closes, dtype=float)
-
-        # SMA if on
-        if sma_on:
-            sma_values = calc_sma(closes_array)
-            fig.add_trace(go.Scatter(
-                x=times, y=sma_values, mode='lines', line=dict(color='yellow', width=2),
-                name="SMA(14)"
-            ))
-
-        # RSI if on
-        if rsi_on:
-            rsi_values = calc_rsi(closes_array, period=7)
-            fig.add_trace(go.Scatter(
-                x=times, y=rsi_values, mode='lines', line=dict(color='magenta', width=2),
-                name="RSI(14)",
-                yaxis="y2"
-            ))
-            fig.update_layout(
-                yaxis2=dict(
-                    overlaying='y',
-                    side='right',
-                    position=0.99,
-                    range=[0, 100],
-                    showgrid=False,
-                    tickfont=dict(color='magenta'),
-                    title='RSI'
-                )
-            )
-
-        # Volume if on
-        if volume_on:
-            fig.add_trace(go.Bar(
-                x=times, y=volumes, name='Volume',
-                marker_color='rgba(200,200,200,0.3)',
-                yaxis='y3'
-            ))
-            fig.update_layout(
-                yaxis3=dict(
-                    overlaying='y',
-                    side='right',
-                    showgrid=False,
-                    tickfont=dict(color='rgba(200,200,200,0.7)'),
-                    title='Volume'
-                )
-            )
-
-        # MACD if on
-        if macd_on:
-            macd, signal = calc_macd(closes_array)
-            fig.add_trace(go.Scatter(
-                x=times, y=macd, mode='lines', line=dict(color='cyan', width=1),
-                name="MACD",
-                yaxis="y4"
-            ))
-            fig.add_trace(go.Scatter(
-                x=times, y=signal, mode='lines', line=dict(color='red', width=1),
-                name="Signal Line",
-                yaxis="y4"
-            ))
-            fig.update_layout(
-                yaxis4=dict(
-                    overlaying='y',
-                    side='right',
-                    position=0.95,
-                    range=[min(macd), max(macd)],
-                    showgrid=False,
-                    tickfont=dict(color='cyan'),
-                    title='MACD'
-                )
-            )
-
-        # Stochastic Oscillator if on
-        if stochastic_on:
-            stochastic_k, stochastic_d = calc_stochastic(closes_array)
-            fig.add_trace(go.Scatter(
-                x=times, y=stochastic_k, mode='lines', line=dict(color='green', width=1),
-                name='Stochastic %K',
-                yaxis='y5'
-            ))
-            fig.add_trace(go.Scatter(
-                x=times, y=stochastic_d, mode='lines', line=dict(color='blue', width=1),
-                name='Stochastic %D',
-                yaxis='y5'
-            ))
-            fig.update_layout(
-                yaxis5=dict(
-                    overlaying='y',
-                    side='right',
-                    position=0.98,
-                    range=[0, 100],
-                    showgrid=False,
-                    tickfont=dict(color='green'),
-                    title='Stochastic Oscillator'
-                )
-            )
-
-        # EMA if on
-        if ema_on:
-            ema_values = calc_ema(closes_array, period=20)
-            fig.add_trace(go.Scatter(
-                x=times, y=ema_values, mode='lines', line=dict(color='lime', width=1),
-                name='EMA(20)'
-            ))
-
-        fig.update_layout(
-            paper_bgcolor="#121212",
-            plot_bgcolor="#1e1e2f",
-            xaxis=dict(
-                gridcolor="gray",
-                showgrid=True,
-                showline=False,
-                linecolor='white',
-                tickfont=dict(color='white'),
-            ),
-            yaxis=dict(
-                gridcolor="gray",
-                showgrid=True,
-                showline=False,
-                linecolor='white',
-                tickfont=dict(color='white'),
-            ),
-            font=dict(color='white'),
-            margin=dict(l=50, r=150, t=50, b=50)  # Increased right margin to accommodate additional y-axes
-        )
-
-        # Selected coin logo next to the price:
-        selected_coin_logo_src = COIN_CONFIG[coin]["logo"]
-
-    return (
-        selected_coin_logo_src,
-        price_text,
-        change_text,
-        change_class,
-        fig,
-        current_price_store
+    # Update figure layout
+    fig.update_layout(
+        paper_bgcolor="#121212",
+        plot_bgcolor="#1e1e2f",
+        xaxis=dict(gridcolor="gray", tickfont=dict(color="white")),
+        yaxis=dict(gridcolor="gray", tickfont=dict(color="white")),
+        font=dict(color="white"),
+        margin=dict(l=50, r=50, t=50, b=50)
     )
+
+    # Return updated outputs
+    return (
+        COIN_CONFIG[coin]["logo"],  # Coin logo
+        price_text,                # Current price
+        change_text,               # Change percentage
+        change_class,              # Change percentage class
+        fig,                       # Updated figure
+        current_price_store        # Updated price store
+    )
+
 
 @app.callback(
     [
