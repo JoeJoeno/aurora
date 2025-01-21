@@ -652,11 +652,19 @@ def update_chart(toggles, n_intervals, last_price):
     fig.update_layout(
         paper_bgcolor="#121212",
         plot_bgcolor="#1e1e2f",
-        xaxis=dict(gridcolor="gray", tickfont=dict(color="white")),
-        yaxis=dict(gridcolor="gray", tickfont=dict(color="white")),
+        xaxis=dict(
+            gridcolor="gray",
+            tickfont=dict(color="white"),
+            rangeslider={"visible": False}  # Disable the range slider
+        ),
+        yaxis=dict(
+            gridcolor="gray",
+            tickfont=dict(color="white")
+        ),
         font=dict(color="white"),
         margin=dict(l=50, r=50, t=50, b=50)
     )
+
 
     # Return updated outputs
     return (
